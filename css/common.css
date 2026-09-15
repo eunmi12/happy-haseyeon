@@ -73,6 +73,9 @@ button {
   margin: 0 auto;
   background: var(--white);
   min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 860px) {

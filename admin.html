@@ -7,7 +7,7 @@
   <title>관리자 — 행복하서연</title>
   <link rel="stylesheet" href="/css/common.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suneditor@2.47.0/dist/css/suneditor.min.css" />
-  <link rel="stylesheet" href="/css/admin.css?v=20260723-pwnav1" />
+  <link rel="stylesheet" href="/css/admin.css?v=20260915-guide1" />
 </head>
 <body class="admin-body">
   <div id="loginView" class="login-wrap">
@@ -71,6 +71,7 @@
           </div>
         </div>
 
+        <button type="button" class="nav-standalone" data-panel="guide">광고 블로그 사용방법</button>
         <button type="button" class="nav-standalone" data-panel="password">비밀번호 변경</button>
       </nav>
       <div class="sidebar-foot">
@@ -887,6 +888,127 @@
           </div>
           <button type="button" class="btn btn-primary" id="btnChangePw">비밀번호 변경</button>
         </section>
+
+        <section class="panel" id="panel-guide">
+          <div class="guide-page">
+            <header class="guide-hero">
+              <p class="guide-kicker">광고 전용</p>
+              <h2>광고용 블로그 제작 사용방법</h2>
+              <p class="guide-lead">광고 랜딩 작성 · 목록 · 댓글 · 픽셀만 안내합니다. 아래 순서대로 따라 하시면 됩니다.</p>
+              <nav class="guide-toc" aria-label="바로가기">
+                <a href="#guide-ad-write">1. 작성</a>
+                <a href="#guide-ad-list">2. 목록·수정</a>
+                <a href="#guide-ad-comments">3. 댓글</a>
+                <a href="#guide-ad-pixel">4. 픽셀</a>
+                <a href="#guide-ad-tips">5. 팁</a>
+              </nav>
+            </header>
+
+            <article class="guide-section" id="guide-ad-write">
+              <div class="guide-section-head">
+                <span class="guide-step">01</span>
+                <div>
+                  <h3>광고 블로그 작성</h3>
+                  <p>좌측 <strong>광고 → 광고 블로그 작성</strong>에서 새 랜딩을 만듭니다. 광고 글은 검색에 안 잡히도록 noindex 처리됩니다.</p>
+                </div>
+              </div>
+              <figure class="guide-figure">
+                <img src="/images/guide/guide-ad-write.png" alt="광고 블로그 작성 화면 안내" loading="lazy" width="1280" height="720" />
+                <figcaption>① 메뉴 진입 → ② 제목·본문 작성 → ③ 픽셀 설정 → ④ 저장</figcaption>
+              </figure>
+              <ol class="guide-steps">
+                <li>왼쪽 메뉴 <b>광고 블로그 작성</b>을 누릅니다.</li>
+                <li><b>제목</b>과 본문(이미지·링크 카드 포함)을 작성합니다. 네이버 글을 붙여넣어도 됩니다.</li>
+                <li>하단에 <b>픽셀 설정</b>을 필요할 때만 입력합니다. (자세한 내용은 4번 참고)</li>
+                <li><b>저장</b>하면 광고 블로그 목록으로 이동합니다. 공개 URL은 목록의 <b>보기</b>로 확인하세요.</li>
+              </ol>
+              <div class="guide-callout">
+                <strong>링크 썸네일</strong>
+                <p>본문에 URL만 넣으면 링크 카드가 만들어집니다. 저장 후 미리보기/공개 페이지에서 확인하세요.</p>
+              </div>
+            </article>
+
+            <article class="guide-section" id="guide-ad-list">
+              <div class="guide-section-head">
+                <span class="guide-step">02</span>
+                <div>
+                  <h3>광고 목록에서 수정·확인</h3>
+                  <p>작성한 랜딩은 <strong>광고 → 광고 블로그 목록</strong>에서 관리합니다.</p>
+                </div>
+              </div>
+              <figure class="guide-figure">
+                <img src="/images/guide/guide-ad-list.png" alt="광고 블로그 목록 화면 안내" loading="lazy" width="1280" height="720" />
+                <figcaption>① 목록 확인 → ② 수정/보기 → ③ 새 글 작성</figcaption>
+              </figure>
+              <ol class="guide-steps">
+                <li>제목·날짜·조회수를 한눈에 볼 수 있습니다.</li>
+                <li><b>수정</b>으로 다시 편집하고, <b>보기</b>로 실제 공개 화면을 엽니다.</li>
+                <li>새 랜딩이 필요하면 메뉴의 <b>광고 블로그 작성</b>으로 이동합니다.</li>
+              </ol>
+            </article>
+
+            <article class="guide-section" id="guide-ad-comments">
+              <div class="guide-section-head">
+                <span class="guide-step">03</span>
+                <div>
+                  <h3>광고 블로그 댓글</h3>
+                  <p>광고 랜딩 전용 댓글은 <strong>광고 → 광고 블로그 댓글</strong>에서만 관리합니다.</p>
+                </div>
+              </div>
+              <figure class="guide-figure">
+                <img src="/images/guide/guide-ad-comments.png" alt="광고 블로그 댓글 화면 안내" loading="lazy" width="1280" height="720" />
+                <figcaption>① 광고 글 선택 → ② 댓글 목록 확인 → ③ 댓글 등록</figcaption>
+              </figure>
+              <ol class="guide-steps">
+                <li>왼쪽에서 댓글을 달 광고 글을 선택합니다.</li>
+                <li>오른쪽에 기존 댓글·답글이 보입니다. 수정·삭제·답글을 관리할 수 있습니다.</li>
+                <li>아래 입력창에 내용을 쓰고 <b>댓글 등록</b>을 누르면 공개 페이지에도 바로 반영됩니다.</li>
+              </ol>
+              <div class="guide-callout guide-callout--tip">
+                <strong>연출 팁</strong>
+                <p>랜딩 신뢰도를 위해 초기에 자연스러운 질문·후기 형태의 댓글을 몇 개 미리 올려 두면 좋습니다.</p>
+              </div>
+            </article>
+
+            <article class="guide-section" id="guide-ad-pixel">
+              <div class="guide-section-head">
+                <span class="guide-step">04</span>
+                <div>
+                  <h3>매체별 광고 픽셀</h3>
+                  <p>작성 화면 하단 <strong>광고 픽셀 · 전환 태그</strong>에서 Meta / TikTok / Google / 네이버 / 카카오를 설정합니다.</p>
+                </div>
+              </div>
+              <ul class="guide-checklist">
+                <li><b>ID만 넣으면 그 매체만 심김</b> — 비워 둔 매체는 스크립트가 아예 안 나갑니다. 여러 매체를 동시에 넣어도 서로 독립입니다.</li>
+                <li><b>이벤트 복수 선택</b> — 체크한 이벤트가 <u>페이지가 열릴 때 전부 한 번에</u> 전송됩니다. (버튼 클릭 시점이 아님)</li>
+                <li><b>권장</b> — 보통은 <b>PageView만</b> 켜 두세요. Lead·Purchase 등은 Ads에서 그 전환으로 최적화할 때만 추가하세요.</li>
+                <li><b>Purchase</b> — 켜면 아래 금액 칸도 함께 넣는 것이 좋습니다.</li>
+                <li><b>조회수 리포트</b> — <b>광고 → 광고 조회수 리포트</b>에서 기간별 유입을 확인합니다.</li>
+              </ul>
+            </article>
+
+            <article class="guide-section" id="guide-ad-tips">
+              <div class="guide-section-head">
+                <span class="guide-step">05</span>
+                <div>
+                  <h3>자주 하는 실수 · 바로가기</h3>
+                  <p>광고 블로그 작업 시 참고하세요.</p>
+                </div>
+              </div>
+              <ul class="guide-checklist">
+                <li><b>이미지 깨짐</b> — 본문 이미지가 넓게 잘리면 공개 페이지에서 자동으로 맞춥니다. 그래도 이상하면 이미지를 다시 업로드해 보세요.</li>
+                <li><b>링크 카드 썸네일</b> — 저장 후 공개 URL에서 확인하세요. 관리자에서 다시 저장하면 빈 카드도 복구됩니다.</li>
+                <li><b>SEO</b> — 광고 글은 SEO 입력란이 숨겨지고 검색에 노출되지 않습니다. (의도된 동작)</li>
+              </ul>
+              <div class="guide-quick">
+                <button type="button" class="btn btn-primary" data-guide-go="edit" data-guide-category="광고">광고 작성 바로가기</button>
+                <button type="button" class="btn btn-ghost" data-guide-go="ad-posts">광고 목록 바로가기</button>
+                <button type="button" class="btn btn-ghost" data-guide-go="ad-comments">광고 댓글 바로가기</button>
+                <button type="button" class="btn btn-ghost" data-guide-go="ad-stats">조회수 리포트 바로가기</button>
+              </div>
+            </article>
+          </div>
+        </section>
       </main>
     </div>
   </div>
@@ -933,6 +1055,6 @@
   <script src="https://cdn.jsdelivr.net/npm/suneditor@2.47.0/dist/suneditor.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/suneditor@2.47.0/src/lang/ko.js"></script>
   <script src="/js/config.js"></script>
-  <script src="/js/admin.js?v=20260913-imgfix2"></script>
+  <script src="/js/admin.js?v=20260915-guide2"></script>
 </body>
 </html>

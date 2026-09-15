@@ -149,6 +149,9 @@
   word-break: keep-all;
   color: #222;
   background: #fff;
+  overflow-x: clip;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .post-body p {
@@ -160,10 +163,12 @@
 
 .post-body img {
   display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 16px 0;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 16px auto;
   border-radius: 4px;
+  box-sizing: border-box !important;
 }
 
 /* SunEditor 정렬 클래스·data-align → 공개 페이지에서도 유지 */
@@ -237,8 +242,98 @@
 }
 
 .post-body .se-component,
-.post-body .se-image-container {
-  max-width: 100%;
+.post-body .se-image-container,
+.post-body .se-component-content,
+.post-body .se-section,
+.post-body .se-module,
+.post-body .se-module-image,
+.post-body .se-module-image-link,
+.post-body .se-imageStrip,
+.post-body .se-imageStrip-container,
+.post-body .se-imageStrip-col-2,
+.post-body .se-section-imageStrip,
+.post-body .__se-component {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 네이버 붙여넣기: content-box + padding 40px 로 우측 넘침 방지 */
+.post-body .se-component-content,
+.post-body .se-component-content-fit {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+.post-body .se-component {
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  overflow: hidden;
+}
+
+/* 전후 비교 2열 스트립: nowrap+고정폭 → flex로 중앙 정렬 */
+.post-body .se-imageStrip-container,
+.post-body .se-imageStrip-col-2 {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  gap: 4px;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  white-space: normal !important;
+  box-sizing: border-box !important;
+}
+
+.post-body .se-imageStrip-container .se-module,
+.post-body .se-imageStrip-container .se-module-image {
+  display: block !important;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  max-width: calc(50% - 2px) !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  vertical-align: top;
+  float: none !important;
+}
+
+.post-body .se-imageStrip-container .se-module-image-link,
+.post-body .se-imageStrip-container a {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+.post-body .se-imageStrip-container img,
+.post-body .se-imageStrip-container img.se-image-resource {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+.post-body .se-section-image,
+.post-body .se-section-align-center,
+.post-body .se-module-image-link {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 100% !important;
+}
+
+.post-body img.se-image-resource {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .post-body strong {
@@ -267,11 +362,15 @@
   line-height: 1.5;
 }
 
-.post-body .link-card-block {
+.post-body .link-card-block,
+.post-body div.link-card-block {
   display: block;
   width: 100%;
+  max-width: 100%;
   margin: 0 0 16px;
   text-align: center;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .post-body .link-card-block[data-align='left'],
@@ -1216,6 +1315,17 @@ img.cafe-sheet-comment-avatar {
     padding-left: 14px;
     padding-right: 14px;
     font-size: 16px;
+    overflow-x: clip;
+  }
+
+  .post-body .se-imageStrip-container .se-module,
+  .post-body .se-imageStrip-container .se-module-image {
+    max-width: calc(50% - 2px) !important;
+  }
+
+  .post-body table.link-card {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .comment-section {

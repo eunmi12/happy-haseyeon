@@ -434,6 +434,7 @@ function showPanel(name, category) {
     notices: '공지 목록',
     settings: '프로필/설정',
     password: '비밀번호 변경',
+    guide: '광고용 블로그 제작 사용방법',
   };
   const titleEl = document.getElementById('pageTitle');
   if (titleEl) titleEl.textContent = titles[name] || '';
@@ -1856,14 +1857,15 @@ function buildLinkCardHtml({ url, title, description, image, domain }, opts = {}
     `</td></tr>` +
     `</tbody></table>`;
 
+  // link-card-block 은 div 필수: <p><table> 은 무효 HTML이라 저장 시 카드가 비워짐
   return (
     `<p><br></p>` +
     `<p class="link-card-url-line" data-lc-part="url" style="text-align:${align};margin:0 0 8px;">` +
     `<a class="link-card-url" href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>` +
     `</p>` +
-    `<p class="link-card-block" data-lc-part="card" data-align="${align}" style="text-align:${align};margin:0 0 16px;">` +
+    `<div class="link-card-block" data-lc-part="card" data-align="${align}" style="text-align:${align};margin:0 0 16px;">` +
     table +
-    `</p>` +
+    `</div>` +
     `<p><br></p>`
   );
 }
@@ -1943,6 +1945,45 @@ function prepareLinkCardsHtml(html) {
     );
     const root = doc.getElementById('__lc_root__');
     if (!root) return html;
+
+    // 빈 link-card-block (p/div) → 직전 URL 줄로 카드 재생성
+    for (const empty of [...root.querySelectorAll('.link-card-block')]) {
+      if (empty.querySelector('table.link-card, a.link-card')) continue;
+      if ((empty.textContent || '').trim()) continue;
+      const prev = empty.previousElementSibling;
+      const href =
+        (prev?.classList?.contains('link-card-url-line') &&
+          prev.querySelector('a[href]')?.getAttribute('href')) ||
+        '';
+      if (!href) continue;
+      let domain = '';
+      try {
+        domain = new URL(href).hostname.replace(/^www\./, '');
+      } catch {
+        domain = href;
+      }
+      const align =
+        (empty.getAttribute('data-align') || 'center').toLowerCase() === 'left'
+          ? 'left'
+          : 'center';
+      const wrap = doc.createElement('div');
+      wrap.innerHTML = buildLinkCardHtml(
+        {
+          url: href,
+          title: domain,
+          description: '',
+          image: `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`,
+          domain,
+        },
+        { align }
+      );
+      const urlLine = wrap.querySelector('.link-card-url-line');
+      const newBlock = wrap.querySelector('.link-card-block');
+      if (urlLine && prev?.classList?.contains('link-card-url-line')) {
+        prev.replaceWith(urlLine);
+      }
+      if (newBlock) empty.replaceWith(newBlock);
+    }
 
     // 구버전 a.link-card / background-image 썸네일도 수집
     const nodes = [
@@ -2464,7 +2505,7 @@ function alignLinkCards(align = 'center') {
       if (t.parentElement?.classList?.contains('link-card-block')) {
         block = t.parentElement;
       } else {
-        const p = document.createElement('p');
+        const p = document.createElement('div');
         p.className = 'link-card-block';
         t.replaceWith(p);
         p.appendChild(t);
@@ -3569,6 +3610,25 @@ function bindAdminUI() {
         showPanel(btn.dataset.panel);
       }
     };
+  });
+
+  document.querySelectorAll('[data-guide-go]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panel = btn.dataset.guideGo;
+      const category = btn.dataset.guideCategory;
+      if (panel === 'edit') openWrite(category || AD_CATEGORY);
+      else showPanel(panel);
+    });
+  });
+
+  document.querySelectorAll('.guide-toc a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href')?.slice(1);
+      const el = id && document.getElementById(id);
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
 
   document.getElementById('btnRefreshPosts').onclick = () => loadPosts();

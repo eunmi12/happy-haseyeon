@@ -1,6 +1,7 @@
 import { ensureSchema, getSettings } from './_utils.js';
 import { postHeadTags } from './_seo.js';
 import { buildPixelHeadHtml, buildPixelBodyStartHtml } from './_pixels.js';
+import { sanitizePostBodyHtml, enrichLinkCardPreviews } from './_body.js';
 
 function escapeHtml(s) {
   return String(s ?? '')
@@ -96,7 +97,15 @@ export async function onRequestGet(context) {
     .bind(post.id)
     .all();
 
-  const html = renderPost(post, comments || [], settings, new URL(context.request.url).origin);
+  let bodyHtml = sanitizePostBodyHtml(post.body || '');
+  try {
+    bodyHtml = await enrichLinkCardPreviews(bodyHtml, { limit: 12, timeoutMs: 3500 });
+  } catch (e) {
+    console.error('enrichLinkCardPreviews', e);
+  }
+  const postForRender = { ...post, body: bodyHtml };
+
+  const html = renderPost(postForRender, comments || [], settings, new URL(context.request.url).origin);
   return new Response(html, {
     status: 200,
     headers: {
@@ -199,7 +208,7 @@ function renderPost(post, comments, settings, origin = 'https://tennis0915.com')
   ${pixelHead}
   <link rel="stylesheet" href="/css/common.css" />
   <link rel="stylesheet" href="/css/main.css" />
-  <link rel="stylesheet" href="/css/blog.css?v=20260723-ogcard2" />
+  <link rel="stylesheet" href="/css/blog.css?v=20260915-layoutfix" />
 </head>
 <body>
   ${pixelBody}
