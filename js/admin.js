@@ -257,6 +257,7 @@ function setLockedCategory(category) {
   document.getElementById('categoryDisplay').value = cat;
   syncSlugUiForCategory(cat);
   syncPixelUiForCategory(cat);
+  syncSeoUiForCategory(cat);
 }
 
 function syncSlugUiForCategory(category) {
@@ -267,6 +268,11 @@ function syncSlugUiForCategory(category) {
 function syncPixelUiForCategory(category) {
   const box = document.getElementById('adPixelBox');
   if (box) box.hidden = category !== AD_CATEGORY;
+}
+
+function syncSeoUiForCategory(category) {
+  const box = document.getElementById('seoBox');
+  if (box) box.hidden = category === AD_CATEGORY;
 }
 
 const PIXEL_BADGE_GROUPS = {
