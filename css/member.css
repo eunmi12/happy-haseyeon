@@ -288,14 +288,15 @@
   color: #ccc;
 }
 
+/* —— 아이디/비밀번호 찾기 모달 —— */
 .member-modal {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 80;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 20px 16px;
 }
 
 .member-modal[hidden] {
@@ -305,47 +306,218 @@
 .member-modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(15, 20, 18, 0.45);
+  background: rgba(12, 18, 14, 0.48);
+  backdrop-filter: blur(2px);
 }
 
 .member-modal-panel {
   position: relative;
-  width: min(400px, 100%);
+  z-index: 1;
+  width: min(420px, 100%);
+  max-height: min(92vh, 640px);
+  overflow: auto;
   background: #fff;
-  border-radius: 14px;
-  padding: 22px 20px 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+  animation: memberModalIn 0.18s ease-out;
 }
 
-.member-modal-panel h2 {
-  margin: 0 0 6px;
+@keyframes memberModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.member-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid #eef0f2;
+}
+
+.member-modal-eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #03c75a;
+}
+
+.member-modal-head h2 {
+  margin: 0;
   font-size: 18px;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.3;
 }
 
-.member-modal-panel .sub {
-  margin: 0 0 12px;
+.member-modal-x {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #555;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-modal-x:hover {
+  background: #e8eaed;
+  color: #111;
+}
+
+.member-modal-body {
+  padding: 14px 18px 18px;
+}
+
+.member-modal-desc {
+  margin: 0 0 14px;
   font-size: 13px;
-  color: #777;
-  line-height: 1.45;
+  line-height: 1.55;
+  color: #666;
+}
+
+.member-modal-desc strong {
+  color: #333;
+  font-weight: 700;
+}
+
+.member-modal-form .form-row {
+  margin-bottom: 12px;
+}
+
+.member-modal-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.member-modal-form input[type='text'],
+.member-modal-form input[type='password'] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #dde1e6;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  color: #222;
+}
+
+.member-modal-form input:focus {
+  outline: none;
+  border-color: #03c75a;
+  box-shadow: 0 0 0 3px rgba(3, 199, 90, 0.14);
+}
+
+.member-modal-form .msg {
+  margin-bottom: 10px;
+}
+
+.member-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.member-modal-panel .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.member-modal-panel .btn-primary {
+  background: #03c75a;
+  color: #fff;
+}
+
+.member-modal-panel .btn-primary:hover {
+  background: #02b351;
+}
+
+.member-modal-panel .btn-ghost {
+  background: #f3f4f6;
+  color: #333;
+}
+
+.member-modal-panel .btn-ghost:hover {
+  background: #e8eaed;
 }
 
 .member-result {
-  margin: 12px 0;
-  padding: 12px;
+  margin: 4px 0 0;
+  padding: 14px 12px;
   background: #e8f8ef;
-  border-radius: 8px;
+  border: 1px solid #c6ebd4;
+  border-radius: 10px;
   color: #0b7a3b;
   font-size: 14px;
   text-align: center;
+  line-height: 1.45;
 }
 
-.member-modal-panel .btn-block {
-  margin-top: 8px;
+.member-result strong {
+  font-size: 16px;
+  letter-spacing: 0.02em;
 }
 
 .msg.ok {
   background: #e8f5e9;
   color: #2e7d32;
+}
+
+@media (max-width: 520px) {
+  .member-modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .member-modal-panel {
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 18px 18px 0 0;
+    animation: memberSheetIn 0.2s ease-out;
+  }
+
+  @keyframes memberSheetIn {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .member-modal-actions {
+    grid-template-columns: 1fr 1.2fr;
+  }
 }
 
 @media (max-width: 480px) {

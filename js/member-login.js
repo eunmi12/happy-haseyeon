@@ -11,6 +11,8 @@ function openModal(id) {
   if (!el) return;
   el.hidden = false;
   document.body.style.overflow = 'hidden';
+  const focusEl = el.querySelector('input:not([type="hidden"]), button.btn-primary');
+  if (focusEl) setTimeout(() => focusEl.focus(), 30);
 }
 
 function closeModal(el) {
@@ -21,6 +23,12 @@ function closeModal(el) {
     document.body.style.overflow = '';
   }
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const open = [...document.querySelectorAll('.member-modal')].find((m) => !m.hidden);
+  if (open) closeModal(open);
+});
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
