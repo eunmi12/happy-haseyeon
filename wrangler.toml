@@ -8,13 +8,9 @@ database_name = "happy-haseyeon-db"
 database_id = "16086623-d507-4504-b5f6-30714c37d4b3"
 preview_database_id = "16086623-d507-4504-b5f6-30714c37d4b3"
 
-# R2는 고객 카드 등록 후 버킷 생성 시 활성화
-# npx wrangler r2 bucket create happy-haseyeon-r2
-# 공개 접속 URL을 vars.R2_PUBLIC_URL 에 넣고 아래 주석 해제
-# [[r2_buckets]]
-# binding = "IMAGES"
-# bucket_name = "happy-haseyeon-r2"
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "happy-haseyeon-r2"
 
 [vars]
-# R2 활성화 후 pub-xxx.r2.dev 또는 커스텀 도메인으로 교체
-R2_PUBLIC_URL = ""
+R2_PUBLIC_URL = "https://pub-0d79669bad084bcd94df5093066b951f.r2.dev"

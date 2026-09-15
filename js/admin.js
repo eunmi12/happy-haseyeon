@@ -3096,7 +3096,7 @@ function dataUrlToFile(dataUrl, filename) {
   return new File([bytes], name, { type: mime });
 }
 
-const R2_PUBLIC_HOST = 'pub-94102d6978944a8b99c105a3e3a6069c.r2.dev';
+const R2_PUBLIC_HOST = 'pub-0d79669bad084bcd94df5093066b951f.r2.dev';
 
 function decodeHtmlEntitiesInUrl(s) {
   return String(s || '')
