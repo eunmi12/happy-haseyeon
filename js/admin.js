@@ -2587,7 +2587,7 @@ function updateSeoPreview() {
   descEl.textContent = showDesc;
   urlEl.textContent = isAd
     ? publicPostUrl(slug === '글주소' ? '글주소' : slug, { ad: true })
-    : `https://happy-haseyeon.pages.dev/${slug}`;
+    : `https://tennis0915.com/${slug}`;
   if (countT) countT.textContent = String((document.getElementById('seo_title')?.value || '').length);
   if (countD) countD.textContent = String((document.getElementById('seo_description')?.value || '').length);
 }
@@ -3113,6 +3113,7 @@ function isOwnedImageUrl(url) {
   if (!u || /^data:/i.test(u) || /^blob:/i.test(u)) return true;
   if (u.includes(R2_PUBLIC_HOST)) return true;
   if (/^\/images\//i.test(u)) return true;
+  if (/tennis0915\.com\/images\//i.test(u)) return true;
   if (/happy-haseyeon\.pages\.dev\/images\//i.test(u)) return true;
   return false;
 }

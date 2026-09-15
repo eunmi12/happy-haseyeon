@@ -4,10 +4,18 @@
 
 ## Production
 
-- 사이트: https://happy-haseyeon.pages.dev/
-- 상세 예: https://happy-haseyeon.pages.dev/fv75tanm
-- 관리자: https://happy-haseyeon.pages.dev/admin  (또는 /admin.html)
-- 초기 비밀번호: `admin1234`
+- 정식 도메인: https://tennis0915.com/
+- Pages 기본: https://happy-haseyeon.pages.dev/
+- 관리자: https://tennis0915.com/admin  (또는 /admin.html)
+
+### 도메인 DNS (Cloudflare)
+
+Pages에 도메인은 등록됨. DNS에 아래 레코드가 있어야 active 됩니다.
+
+| Type | Name | Target | Proxy |
+|------|------|--------|-------|
+| CNAME | `@` (tennis0915.com) | `happy-haseyeon.pages.dev` | Proxied |
+| CNAME | `www` | `happy-haseyeon.pages.dev` | Proxied |
 
 ## 구조
 

@@ -1,5 +1,5 @@
 /** Live Server(5500) / file:// 에서도 API는 wrangler(8788)로 요청 */
-const SITE_ORIGIN = 'https://happy-haseyeon.pages.dev';
+const SITE_ORIGIN = 'https://tennis0915.com';
 const AD_CATEGORY = '광고';
 
 function apiBase() {

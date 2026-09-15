@@ -45,7 +45,7 @@ function isOwnedImageUrl(url, env) {
   if (base && u.startsWith(base + '/')) return true;
   if (/^\/images\//i.test(u)) return true;
   try {
-    const host = new URL(u, 'https://happy-haseyeon.pages.dev').hostname;
+    const host = new URL(u, 'https://tennis0915.com').hostname;
     if (/happy-haseyeon\.pages\.dev$/i.test(host) && /\/images\//i.test(u)) return true;
   } catch {
     /* ignore */

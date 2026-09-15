@@ -125,7 +125,7 @@ function notFoundHtml() {
 </html>`;
 }
 
-function renderPost(post, comments, settings, origin = 'https://happy-haseyeon.pages.dev') {
+function renderPost(post, comments, settings, origin = 'https://tennis0915.com') {
   const blogName = settings.blog_name || '행복하서연';
   const profileName = settings.profile_name || '행복하서연';
   const { headHtml } = postHeadTags(post, settings, origin);

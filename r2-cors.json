@@ -1,8 +1,10 @@
-﻿{
+{
   "rules": [
     {
       "allowed": {
         "origins": [
+          "https://tennis0915.com",
+          "https://www.tennis0915.com",
           "https://happy-haseyeon.pages.dev",
           "http://127.0.0.1:8788",
           "http://localhost:8788",

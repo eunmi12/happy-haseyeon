@@ -38,7 +38,7 @@ export async function requireAdmin(request, env) {
 }
 
 export const AD_CATEGORY = '광고';
-export const SITE_ORIGIN = 'https://happy-haseyeon.pages.dev';
+export const SITE_ORIGIN = 'https://tennis0915.com';
 
 /** Asia/Seoul(UTC+9) 기준 YYYY-MM-DD */
 export function kstDateString(d = new Date()) {
