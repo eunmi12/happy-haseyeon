@@ -2850,7 +2850,10 @@ async function savePost() {
       });
     }
     await loadPosts();
-    if (isAd) await loadAdPosts();
+    if (isAd) {
+      await loadAdPosts();
+      showPanel('ad-posts');
+    }
     loadNotices();
   } catch (e) {
     if (e.message === 'unauthorized') {
