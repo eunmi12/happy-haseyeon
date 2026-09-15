@@ -146,10 +146,8 @@ if(window.kakaoPixel){ kakaoPixel('${kakaoId}').pageView(); }
 
   // 관리자가 붙여넣은 커스텀 스크립트 (값 있을 때만)
   if (p.custom_head_html) {
-    // </body> 등으로 문서 깨뜨리는 패턴 최소 차단
     const custom = p.custom_head_html
       .replace(/<\/(html|body|head)>/gi, '')
-      .replace(/<script[\s>]/?[\s\S]*?<\/script>/gi, (m) => m) // keep scripts
       .trim();
     if (custom) {
       parts.push(`<!-- Custom tracking -->\n${custom}`);
