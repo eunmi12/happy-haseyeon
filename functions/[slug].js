@@ -1,5 +1,6 @@
 import { ensureSchema, getSettings } from './_utils.js';
 import { postHeadTags } from './_seo.js';
+import { buildPixelHeadHtml, buildPixelBodyStartHtml } from './_pixels.js';
 
 function escapeHtml(s) {
   return String(s ?? '')
@@ -128,6 +129,8 @@ function renderPost(post, comments, settings, origin = 'https://happy-haseyeon.p
   const blogName = settings.blog_name || '행복하서연';
   const profileName = settings.profile_name || '하서연';
   const { headHtml } = postHeadTags(post, settings, origin);
+  const pixelHead = buildPixelHeadHtml(post.ad_pixels);
+  const pixelBody = buildPixelBodyStartHtml(post.ad_pixels);
 
   const profileImg = settings.profile_image
     ? `<img class="avatar" src="${escapeHtml(settings.profile_image)}" alt="" />`
@@ -193,11 +196,13 @@ function renderPost(post, comments, settings, origin = 'https://happy-haseyeon.p
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <base href="/" />
   ${headHtml}
+  ${pixelHead}
   <link rel="stylesheet" href="/css/common.css" />
   <link rel="stylesheet" href="/css/main.css" />
   <link rel="stylesheet" href="/css/blog.css?v=20260723-ogcard2" />
 </head>
 <body>
+  ${pixelBody}
   <div class="wrap">
     <header class="blog-top">
       <a class="back" href="/" aria-label="뒤로">←</a>

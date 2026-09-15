@@ -180,6 +180,10 @@ export async function ensurePostsColumns(env) {
     'seo_description',
     "ALTER TABLE posts ADD COLUMN seo_description TEXT DEFAULT ''"
   );
+  await addIfMissing(
+    'ad_pixels',
+    "ALTER TABLE posts ADD COLUMN ad_pixels TEXT DEFAULT ''"
+  );
 }
 
 /** comments 테이블 컬럼 보강 */

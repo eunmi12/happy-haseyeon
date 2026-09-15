@@ -7,6 +7,7 @@ import {
   ensurePostsColumns,
   AD_CATEGORY,
 } from '../../_utils.js';
+import { serializeAdPixels } from '../../_pixels.js';
 
 export async function onRequestOptions() {
   return options();
@@ -105,6 +106,23 @@ export async function onRequestGet(context) {
 /** 스키마 차이에 대비한 단계적 INSERT */
 async function insertPostRow(env, row) {
   const attempts = [
+    {
+      sql: `INSERT INTO posts (slug, title, body, category, cover_image, seo_title, seo_description, ad_pixels, likes, comment_count_display, published_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+      binds: [
+        row.slug,
+        row.title,
+        row.body,
+        row.category,
+        row.cover,
+        row.seo_title,
+        row.seo_description,
+        row.ad_pixels,
+        row.likes,
+        row.comment_count_display,
+        row.published,
+      ],
+    },
     {
       sql: `INSERT INTO posts (slug, title, body, category, cover_image, seo_title, seo_description, likes, comment_count_display, published_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
@@ -229,6 +247,7 @@ export async function onRequestPost(context) {
     const published = body.published_at || '';
     const seo_title = String(body.seo_title || '').trim();
     const seo_description = String(body.seo_description || '').trim();
+    const ad_pixels = serializeAdPixels(body.ad_pixels || {});
 
     const result = await insertPostRow(context.env, {
       slug,
@@ -241,6 +260,7 @@ export async function onRequestPost(context) {
       published,
       seo_title,
       seo_description,
+      ad_pixels,
     });
 
     return json({

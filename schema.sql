@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS posts (
   cover_image TEXT NOT NULL DEFAULT '',
   seo_title TEXT NOT NULL DEFAULT '',
   seo_description TEXT NOT NULL DEFAULT '',
+  ad_pixels TEXT NOT NULL DEFAULT '',
   likes INTEGER NOT NULL DEFAULT 0,
   comment_count_display INTEGER NOT NULL DEFAULT 0,
   published_at TEXT NOT NULL DEFAULT '',

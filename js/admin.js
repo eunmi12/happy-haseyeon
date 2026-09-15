@@ -256,11 +256,92 @@ function setLockedCategory(category) {
   document.getElementById('lockedCategory').value = cat;
   document.getElementById('categoryDisplay').value = cat;
   syncSlugUiForCategory(cat);
+  syncPixelUiForCategory(cat);
 }
 
 function syncSlugUiForCategory(category) {
   const normal = document.getElementById('slugRowNormal');
   if (normal) normal.hidden = category === AD_CATEGORY;
+}
+
+function syncPixelUiForCategory(category) {
+  const box = document.getElementById('adPixelBox');
+  if (box) box.hidden = category !== AD_CATEGORY;
+}
+
+const PIXEL_FIELD_IDS = [
+  'meta_pixel_id',
+  'tiktok_pixel_id',
+  'google_ga4_id',
+  'google_ads_id',
+  'google_ads_label',
+  'google_gtm_id',
+  'naver_wcs_id',
+  'naver_search_conversion_id',
+  'kakao_pixel_id',
+  'custom_head_html',
+];
+
+const PIXEL_BADGE_GROUPS = {
+  meta: ['meta_pixel_id'],
+  tiktok: ['tiktok_pixel_id'],
+  google: ['google_ga4_id', 'google_ads_id', 'google_ads_label', 'google_gtm_id'],
+  naver: ['naver_wcs_id', 'naver_search_conversion_id'],
+  kakao: ['kakao_pixel_id'],
+  custom: ['custom_head_html'],
+};
+
+function getAdPixelsFromForm() {
+  const out = {};
+  document.querySelectorAll('[data-pixel-field]').forEach((el) => {
+    const key = el.dataset.pixelField;
+    const val = String(el.value || '').trim();
+    if (val) out[key] = val;
+  });
+  return out;
+}
+
+function setAdPixelsToForm(raw) {
+  let obj = {};
+  if (raw && typeof raw === 'object') obj = raw;
+  else if (typeof raw === 'string' && raw.trim()) {
+    try {
+      obj = JSON.parse(raw);
+    } catch (_) {
+      obj = {};
+    }
+  }
+  document.querySelectorAll('[data-pixel-field]').forEach((el) => {
+    const key = el.dataset.pixelField;
+    el.value = obj[key] || '';
+  });
+  refreshPixelBadges();
+}
+
+function clearAdPixelsForm() {
+  document.querySelectorAll('[data-pixel-field]').forEach((el) => {
+    el.value = '';
+  });
+  refreshPixelBadges();
+}
+
+function refreshPixelBadges() {
+  const data = getAdPixelsFromForm();
+  Object.entries(PIXEL_BADGE_GROUPS).forEach(([group, keys]) => {
+    const badge = document.querySelector(`[data-pixel-badge="${group}"]`);
+    if (!badge) return;
+    const filled = keys.some((k) => !!data[k]);
+    badge.hidden = !filled;
+  });
+}
+
+function bindPixelFieldListeners() {
+  document.querySelectorAll('[data-pixel-field]').forEach((el) => {
+    if (el.dataset.pixelBound) return;
+    el.dataset.pixelBound = '1';
+    el.addEventListener('input', refreshPixelBadges);
+    el.addEventListener('change', refreshPixelBadges);
+  });
 }
 
 function getSlugInputValue() {
@@ -2412,6 +2493,7 @@ function clearEditForm(category) {
   const seoDescEl = document.getElementById('seo_description');
   if (seoTitleEl) seoTitleEl.value = '';
   if (seoDescEl) seoDescEl.value = '';
+  clearAdPixelsForm();
   updateSeoPreview();
   const coverPrev = document.getElementById('coverPreview');
   coverPrev.removeAttribute('src');
@@ -2598,6 +2680,7 @@ async function editPost(id) {
   const seoDescEl = document.getElementById('seo_description');
   if (seoTitleEl) seoTitleEl.value = p.seo_title || '';
   if (seoDescEl) seoDescEl.value = p.seo_description || '';
+  setAdPixelsToForm(p.ad_pixels || '');
   setCoverPreview(p.cover_image || '');
   setCoverStatus(p.cover_image ? '등록된 대표 이미지입니다' : '', p.cover_image ? 'ok' : '');
   updateCoverFileLabel(null);
@@ -2684,6 +2767,7 @@ async function savePost() {
       published_at: document.getElementById('published_at').value,
       seo_title: document.getElementById('seo_title')?.value.trim() || '',
       seo_description: document.getElementById('seo_description')?.value.trim() || '',
+      ad_pixels: getAdPixelsFromForm(),
     };
 
     showLoading(id ? '게시글을 수정하고 있습니다…' : '게시글을 저장하고 있습니다…', '저장 중');
@@ -3466,6 +3550,8 @@ function bindAdminUI() {
   document.getElementById('btnSavePost').onclick = () => savePost();
   document.getElementById('btnPreview').onclick = () => openPreviewModal();
   bindPreviewModal();
+  bindPixelFieldListeners();
+  refreshPixelBadges();
   document.getElementById('btnDeletePost').onclick = async () => {
     const id = document.getElementById('postId').value;
     if (!id) return;

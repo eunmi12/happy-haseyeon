@@ -1,4 +1,5 @@
 import { json, options, requireAdmin, ensurePostsColumns } from '../../_utils.js';
+import { serializeAdPixels } from '../../_pixels.js';
 
 export async function onRequestOptions() {
   return options();
@@ -23,6 +24,38 @@ export async function onRequestGet(context) {
 
 async function updatePostRow(env, id, body) {
   const attempts = [
+    {
+      sql: `UPDATE posts SET
+        slug = COALESCE(?, slug),
+        title = COALESCE(?, title),
+        body = COALESCE(?, body),
+        category = COALESCE(?, category),
+        cover_image = COALESCE(?, cover_image),
+        seo_title = COALESCE(?, seo_title),
+        seo_description = COALESCE(?, seo_description),
+        ad_pixels = COALESCE(?, ad_pixels),
+        likes = COALESCE(?, likes),
+        comment_count_display = COALESCE(?, comment_count_display),
+        published_at = COALESCE(?, published_at),
+        updated_at = datetime('now')
+       WHERE id = ?`,
+      binds: [
+        body.slug ?? null,
+        body.title ?? null,
+        body.body ?? null,
+        body.category ?? null,
+        body.cover_image ?? null,
+        body.seo_title !== undefined ? String(body.seo_title) : null,
+        body.seo_description !== undefined ? String(body.seo_description) : null,
+        body.ad_pixels !== undefined ? body.ad_pixels : null,
+        body.likes !== undefined ? Number(body.likes) : null,
+        body.comment_count_display !== undefined
+          ? Number(body.comment_count_display)
+          : null,
+        body.published_at ?? null,
+        id,
+      ],
+    },
     {
       sql: `UPDATE posts SET
         slug = COALESCE(?, slug),
@@ -218,6 +251,10 @@ export async function onRequestPut(context) {
         .bind(body.slug, id)
         .first();
       if (conflict) return json({ error: '이미 사용 중인 주소입니다.' }, 400);
+    }
+
+    if (body.ad_pixels !== undefined) {
+      body.ad_pixels = serializeAdPixels(body.ad_pixels || {});
     }
 
     await updatePostRow(context.env, id, body);

@@ -237,6 +237,143 @@
               <textarea id="body"></textarea>
               <p class="form-hint">이미지·네이버 복붙·외부 URL도 「저장」 시 자동으로 우리 서버(R2)에 복사됩니다. URL 붙여넣기·텍스트 URL은 썸네일 카드가 됩니다. 「링크 가운데」로 카드 정렬을 바꿀 수 있습니다.</p>
             </div>
+
+            <!-- 광고 블로그 전용: 매체별 픽셀 (값 있을 때만 글에 자동 삽입) -->
+            <div class="pixel-box" id="adPixelBox" hidden>
+              <div class="pixel-box-head">
+                <h3 class="pixel-box-title">광고 픽셀 · 전환 태그</h3>
+                <p class="form-hint pixel-box-lead">
+                  비워 두면 <strong>아무 것도 삽입되지 않습니다</strong>.
+                  값이 있는 매체만 해당 글 HTML에 자동으로 들어갑니다.
+                  각 매체 계정에서 복사한 <strong>ID만</strong> 넣으면 됩니다. (스크립트 통째로 붙여넣기는 맨 아래 「기타」)
+                </p>
+              </div>
+
+              <details class="pixel-acc">
+                <summary>
+                  <span class="pixel-acc-name">Meta (페이스북·인스타)</span>
+                  <span class="pixel-acc-badge" data-pixel-badge="meta" hidden>입력됨</span>
+                </summary>
+                <div class="pixel-acc-body">
+                  <p class="pixel-help">
+                    Meta 이벤트 관리자 → 데이터 소스 → 픽셀 ID (숫자).<br />
+                    입력 시 <code>PageView</code> 이벤트가 자동 전송됩니다.
+                  </p>
+                  <div class="form-row">
+                    <label for="pixel_meta_id">Meta Pixel ID</label>
+                    <input type="text" id="pixel_meta_id" data-pixel-field="meta_pixel_id" placeholder="예: 123456789012345" autocomplete="off" />
+                  </div>
+                </div>
+              </details>
+
+              <details class="pixel-acc">
+                <summary>
+                  <span class="pixel-acc-name">TikTok</span>
+                  <span class="pixel-acc-badge" data-pixel-badge="tiktok" hidden>입력됨</span>
+                </summary>
+                <div class="pixel-acc-body">
+                  <p class="pixel-help">
+                    TikTok Ads → 자산 → 이벤트 → 웹 픽셀 ID.<br />
+                    입력 시 <code>page</code> 뷰가 자동 전송됩니다.
+                  </p>
+                  <div class="form-row">
+                    <label for="pixel_tiktok_id">TikTok Pixel ID</label>
+                    <input type="text" id="pixel_tiktok_id" data-pixel-field="tiktok_pixel_id" placeholder="예: CXXXXXXXXXXXXXXX" autocomplete="off" />
+                  </div>
+                </div>
+              </details>
+
+              <details class="pixel-acc">
+                <summary>
+                  <span class="pixel-acc-name">Google (GA4 · Ads · GTM)</span>
+                  <span class="pixel-acc-badge" data-pixel-badge="google" hidden>입력됨</span>
+                </summary>
+                <div class="pixel-acc-body">
+                  <p class="pixel-help">
+                    쓰는 것만 넣으세요. 셋 다 넣어도 되고, 하나만 넣어도 됩니다.<br />
+                    · <strong>GA4</strong>: 측정 ID (<code>G-XXXXXXXX</code>)<br />
+                    · <strong>Google Ads</strong>: 전환 ID (<code>AW-XXXXXXXX</code>) + 전환 라벨<br />
+                    · <strong>GTM</strong>: 컨테이너 ID (<code>GTM-XXXX</code>) — GTM만 쓸 경우 GA4/Ads는 비워도 됩니다
+                  </p>
+                  <div class="form-row">
+                    <label for="pixel_ga4_id">GA4 측정 ID</label>
+                    <input type="text" id="pixel_ga4_id" data-pixel-field="google_ga4_id" placeholder="예: G-XXXXXXXX" autocomplete="off" />
+                  </div>
+                  <div class="grid-2">
+                    <div class="form-row">
+                      <label for="pixel_gads_id">Google Ads 전환 ID</label>
+                      <input type="text" id="pixel_gads_id" data-pixel-field="google_ads_id" placeholder="예: AW-XXXXXXXX" autocomplete="off" />
+                    </div>
+                    <div class="form-row">
+                      <label for="pixel_gads_label">전환 라벨</label>
+                      <input type="text" id="pixel_gads_label" data-pixel-field="google_ads_label" placeholder="예: abCdEfGhIjKlMnOp" autocomplete="off" />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <label for="pixel_gtm_id">GTM 컨테이너 ID</label>
+                    <input type="text" id="pixel_gtm_id" data-pixel-field="google_gtm_id" placeholder="예: GTM-XXXXXXX" autocomplete="off" />
+                  </div>
+                </div>
+              </details>
+
+              <details class="pixel-acc">
+                <summary>
+                  <span class="pixel-acc-name">네이버 (분석 · 검색광고)</span>
+                  <span class="pixel-acc-badge" data-pixel-badge="naver" hidden>입력됨</span>
+                </summary>
+                <div class="pixel-acc-body">
+                  <p class="pixel-help">
+                    · <strong>네이버 분석(WCS)</strong>: 공통 스크립트의 <code>wcs_add["wa"]</code> 값<br />
+                    · <strong>검색광고 전환</strong>: 전환 추적에 쓰는 전환 값/ID (있으면 전환 이벤트도 전송)<br />
+                    스크립트 전문이 아니라 <strong>ID 값만</strong> 넣어 주세요.
+                  </p>
+                  <div class="form-row">
+                    <label for="pixel_naver_wcs">네이버 분석(WCS) 계정 ID</label>
+                    <input type="text" id="pixel_naver_wcs" data-pixel-field="naver_wcs_id" placeholder="wcs_add[&quot;wa&quot;] 값" autocomplete="off" />
+                  </div>
+                  <div class="form-row">
+                    <label for="pixel_naver_cnv">검색광고 전환 값</label>
+                    <input type="text" id="pixel_naver_cnv" data-pixel-field="naver_search_conversion_id" placeholder="wcs.cnv 에 넣는 전환 값 (선택)" autocomplete="off" />
+                  </div>
+                </div>
+              </details>
+
+              <details class="pixel-acc">
+                <summary>
+                  <span class="pixel-acc-name">카카오 픽셀</span>
+                  <span class="pixel-acc-badge" data-pixel-badge="kakao" hidden>입력됨</span>
+                </summary>
+                <div class="pixel-acc-body">
+                  <p class="pixel-help">
+                    카카오 모먼트 → 픽셀 관리 → 픽셀 ID.<br />
+                    입력 시 <code>pageView</code> 가 자동 전송됩니다.
+                  </p>
+                  <div class="form-row">
+                    <label for="pixel_kakao_id">카카오 픽셀 ID</label>
+                    <input type="text" id="pixel_kakao_id" data-pixel-field="kakao_pixel_id" placeholder="예: 1234567890123456789" autocomplete="off" />
+                  </div>
+                </div>
+              </details>
+
+              <details class="pixel-acc">
+                <summary>
+                  <span class="pixel-acc-name">기타 · 커스텀 스크립트</span>
+                  <span class="pixel-acc-badge" data-pixel-badge="custom" hidden>입력됨</span>
+                </summary>
+                <div class="pixel-acc-body">
+                  <p class="pixel-help">
+                    위 매체에 없는 태그(예: 크리테오, 애드피라 등)는 광고 콘솔에서 받은
+                    <code>&lt;script&gt;…&lt;/script&gt;</code> 를 그대로 붙여 넣으세요.
+                    비우면 삽입되지 않습니다.
+                  </p>
+                  <div class="form-row">
+                    <label for="pixel_custom_html">커스텀 head 스크립트</label>
+                    <textarea id="pixel_custom_html" data-pixel-field="custom_head_html" rows="5" placeholder="&lt;script&gt;…&lt;/script&gt;"></textarea>
+                  </div>
+                </div>
+              </details>
+            </div>
+
             <div class="toolbar editor-toolbar">
               <button type="button" class="btn btn-primary" id="btnSavePost">저장</button>
               <button type="button" class="btn btn-ghost" id="btnPreview">미리보기</button>

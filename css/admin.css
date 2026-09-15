@@ -2922,3 +2922,117 @@ img.cm-avatar {
     grid-template-columns: 1fr;
   }
 }
+
+/* —— 광고 픽셀 아코디언 —— */
+.pixel-box {
+  margin: 20px 0 8px;
+  padding: 16px 16px 8px;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-panel, #fff);
+}
+
+.pixel-box-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.pixel-box-lead {
+  margin: 0 0 14px;
+  line-height: 1.55;
+}
+
+.pixel-acc {
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: var(--admin-bg, #fafafa);
+  overflow: hidden;
+}
+
+.pixel-acc > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 13.5px;
+  user-select: none;
+}
+
+.pixel-acc > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pixel-acc > summary::before {
+  content: '▸';
+  color: #888;
+  font-size: 12px;
+  transition: transform 0.15s ease;
+}
+
+.pixel-acc[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.pixel-acc-name {
+  flex: 1;
+}
+
+.pixel-acc-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #0b6e4f;
+  background: #d8f5e8;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.pixel-acc-body {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--admin-border);
+}
+
+.pixel-help {
+  margin: 12px 0 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #666;
+}
+
+.pixel-help code {
+  font-size: 11.5px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.pixel-acc-body .form-row {
+  margin-bottom: 10px;
+}
+
+.pixel-acc-body textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+[data-admin-theme='dark'] .pixel-box {
+  background: var(--admin-panel);
+}
+
+[data-admin-theme='dark'] .pixel-acc {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+[data-admin-theme='dark'] .pixel-help {
+  color: #aaa;
+}
+
+[data-admin-theme='dark'] .pixel-acc-badge {
+  color: #9aefc8;
+  background: rgba(11, 110, 79, 0.35);
+}

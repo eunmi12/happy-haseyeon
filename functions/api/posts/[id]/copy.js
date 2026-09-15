@@ -48,9 +48,9 @@ export async function onRequestPost(context) {
   try {
     insert = await context.env.DB.prepare(
       `INSERT INTO posts (
-        slug, title, body, category, cover_image, seo_title, seo_description,
+        slug, title, body, category, cover_image, seo_title, seo_description, ad_pixels,
         likes, comment_count_display, published_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
     )
       .bind(
         slug,
@@ -60,6 +60,7 @@ export async function onRequestPost(context) {
         source.cover_image || '',
         source.seo_title || '',
         source.seo_description || '',
+        source.ad_pixels || '',
         Number(source.likes) || 0,
         Number(source.comment_count_display) || 0,
         source.published_at || ''
@@ -67,22 +68,44 @@ export async function onRequestPost(context) {
       .run();
   } catch (e) {
     console.error('copy insert post', e);
-    insert = await context.env.DB.prepare(
-      `INSERT INTO posts (
-        slug, title, body, category, cover_image, likes, comment_count_display, published_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
-    )
-      .bind(
-        slug,
-        source.title,
-        source.body,
-        source.category || '후기',
-        source.cover_image || '',
-        Number(source.likes) || 0,
-        Number(source.comment_count_display) || 0,
-        source.published_at || ''
+    try {
+      insert = await context.env.DB.prepare(
+        `INSERT INTO posts (
+          slug, title, body, category, cover_image, seo_title, seo_description,
+          likes, comment_count_display, published_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
       )
-      .run();
+        .bind(
+          slug,
+          source.title,
+          source.body,
+          source.category || '후기',
+          source.cover_image || '',
+          source.seo_title || '',
+          source.seo_description || '',
+          Number(source.likes) || 0,
+          Number(source.comment_count_display) || 0,
+          source.published_at || ''
+        )
+        .run();
+    } catch (e2) {
+      insert = await context.env.DB.prepare(
+        `INSERT INTO posts (
+          slug, title, body, category, cover_image, likes, comment_count_display, published_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
+      )
+        .bind(
+          slug,
+          source.title,
+          source.body,
+          source.category || '후기',
+          source.cover_image || '',
+          Number(source.likes) || 0,
+          Number(source.comment_count_display) || 0,
+          source.published_at || ''
+        )
+        .run();
+    }
   }
 
   const newId = insert.meta.last_row_id;
