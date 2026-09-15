@@ -243,9 +243,9 @@
               <div class="pixel-box-head">
                 <h3 class="pixel-box-title">광고 픽셀 · 전환 태그</h3>
                 <p class="form-hint pixel-box-lead">
-                  비워 두면 <strong>아무 것도 삽입되지 않습니다</strong>.
-                  값이 있는 매체만 해당 글 HTML에 자동으로 들어갑니다.
-                  각 매체 계정에서 복사한 <strong>ID만</strong> 넣으면 됩니다. (스크립트 통째로 붙여넣기는 맨 아래 「기타」)
+                  비워 두면 <strong>삽입되지 않습니다</strong>.
+                  ID + 체크한 이벤트만 이 글에 자동 삽입됩니다.
+                  랜딩(조회)만이면 PageView만, 문의·신청 전환이면 Lead / 전환 라벨도 체크하세요.
                 </p>
               </div>
 
@@ -256,12 +256,36 @@
                 </summary>
                 <div class="pixel-acc-body">
                   <p class="pixel-help">
-                    Meta 이벤트 관리자 → 데이터 소스 → 픽셀 ID (숫자).<br />
-                    입력 시 <code>PageView</code> 이벤트가 자동 전송됩니다.
+                    이벤트 관리자 → 데이터 소스 → <strong>픽셀 ID</strong>.<br />
+                    ID만 넣으면 기본 <code>PageView</code>. 리드·구매 등 전환은 아래를 추가로 체크.
                   </p>
                   <div class="form-row">
                     <label for="pixel_meta_id">Meta Pixel ID</label>
                     <input type="text" id="pixel_meta_id" data-pixel-field="meta_pixel_id" placeholder="예: 123456789012345" autocomplete="off" />
+                  </div>
+                  <div class="pixel-event-label">전송할 이벤트 (복수 선택)</div>
+                  <div class="pixel-checks" data-pixel-events="meta_events">
+                    <label class="pixel-check"><input type="checkbox" value="PageView" checked /> PageView (페이지 조회)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Lead" /> Lead (문의·신청·리드)</label>
+                    <label class="pixel-check"><input type="checkbox" value="ViewContent" /> ViewContent (콘텐츠 조회)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Contact" /> Contact (연락)</label>
+                    <label class="pixel-check"><input type="checkbox" value="CompleteRegistration" /> CompleteRegistration (가입완료)</label>
+                    <label class="pixel-check"><input type="checkbox" value="SubmitApplication" /> SubmitApplication (신청서 제출)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Schedule" /> Schedule (예약)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Subscribe" /> Subscribe (구독)</label>
+                    <label class="pixel-check"><input type="checkbox" value="AddToCart" /> AddToCart (장바구니)</label>
+                    <label class="pixel-check"><input type="checkbox" value="InitiateCheckout" /> InitiateCheckout (결제시작)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Purchase" /> Purchase (구매)</label>
+                  </div>
+                  <div class="grid-2">
+                    <div class="form-row">
+                      <label for="pixel_meta_purchase_value">Purchase 금액 (선택)</label>
+                      <input type="text" id="pixel_meta_purchase_value" data-pixel-field="meta_purchase_value" placeholder="예: 99000" autocomplete="off" />
+                    </div>
+                    <div class="form-row">
+                      <label for="pixel_meta_currency">통화</label>
+                      <input type="text" id="pixel_meta_currency" data-pixel-field="meta_purchase_currency" value="KRW" placeholder="KRW" autocomplete="off" />
+                    </div>
                   </div>
                 </div>
               </details>
@@ -273,12 +297,30 @@
                 </summary>
                 <div class="pixel-acc-body">
                   <p class="pixel-help">
-                    TikTok Ads → 자산 → 이벤트 → 웹 픽셀 ID.<br />
-                    입력 시 <code>page</code> 뷰가 자동 전송됩니다.
+                    TikTok Ads → 자산 → 이벤트 → <strong>웹 픽셀 ID</strong>.<br />
+                    폼 제출·문의 랜딩이면 <code>SubmitForm</code> / <code>Contact</code> 를 함께 체크.
                   </p>
                   <div class="form-row">
                     <label for="pixel_tiktok_id">TikTok Pixel ID</label>
                     <input type="text" id="pixel_tiktok_id" data-pixel-field="tiktok_pixel_id" placeholder="예: CXXXXXXXXXXXXXXX" autocomplete="off" />
+                  </div>
+                  <div class="pixel-event-label">전송할 이벤트 (복수 선택)</div>
+                  <div class="pixel-checks" data-pixel-events="tiktok_events">
+                    <label class="pixel-check"><input type="checkbox" value="PageView" checked /> PageView (페이지 조회)</label>
+                    <label class="pixel-check"><input type="checkbox" value="SubmitForm" /> SubmitForm (폼 제출·리드)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Contact" /> Contact (연락)</label>
+                    <label class="pixel-check"><input type="checkbox" value="CompleteRegistration" /> CompleteRegistration (가입)</label>
+                    <label class="pixel-check"><input type="checkbox" value="ClickButton" /> ClickButton (버튼 클릭)</label>
+                    <label class="pixel-check"><input type="checkbox" value="ViewContent" /> ViewContent (콘텐츠 조회)</label>
+                    <label class="pixel-check"><input type="checkbox" value="AddToCart" /> AddToCart (장바구니)</label>
+                    <label class="pixel-check"><input type="checkbox" value="PlaceAnOrder" /> PlaceAnOrder (주문)</label>
+                    <label class="pixel-check"><input type="checkbox" value="CompletePayment" /> CompletePayment (결제완료)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Subscribe" /> Subscribe (구독)</label>
+                    <label class="pixel-check"><input type="checkbox" value="Download" /> Download (다운로드)</label>
+                  </div>
+                  <div class="form-row">
+                    <label for="pixel_tiktok_purchase_value">결제/주문 금액 (선택)</label>
+                    <input type="text" id="pixel_tiktok_purchase_value" data-pixel-field="tiktok_purchase_value" placeholder="예: 99000" autocomplete="off" />
                   </div>
                 </div>
               </details>
@@ -290,25 +332,46 @@
                 </summary>
                 <div class="pixel-acc-body">
                   <p class="pixel-help">
-                    쓰는 것만 넣으세요. 셋 다 넣어도 되고, 하나만 넣어도 됩니다.<br />
-                    · <strong>GA4</strong>: 측정 ID (<code>G-XXXXXXXX</code>)<br />
-                    · <strong>Google Ads</strong>: 전환 ID (<code>AW-XXXXXXXX</code>) + 전환 라벨<br />
-                    · <strong>GTM</strong>: 컨테이너 ID (<code>GTM-XXXX</code>) — GTM만 쓸 경우 GA4/Ads는 비워도 됩니다
+                    · <strong>GA4</strong> <code>G-…</code> = 분석<br />
+                    · <strong>Google Ads</strong> <code>AW-…</code> + 라벨 = 광고 전환 (리드/구매 라벨 분리 가능)<br />
+                    · <strong>GTM</strong> <code>GTM-…</code> = 태그 매니저 (GTM만 쓸 거면 나머지 비워도 됨)
                   </p>
                   <div class="form-row">
                     <label for="pixel_ga4_id">GA4 측정 ID</label>
                     <input type="text" id="pixel_ga4_id" data-pixel-field="google_ga4_id" placeholder="예: G-XXXXXXXX" autocomplete="off" />
                   </div>
+                  <div class="pixel-event-label">GA4 추가 이벤트 (복수 선택 · page_view는 자동)</div>
+                  <div class="pixel-checks" data-pixel-events="google_ga4_events">
+                    <label class="pixel-check"><input type="checkbox" value="generate_lead" /> generate_lead (리드)</label>
+                    <label class="pixel-check"><input type="checkbox" value="sign_up" /> sign_up (가입)</label>
+                    <label class="pixel-check"><input type="checkbox" value="contact" /> contact (연락)</label>
+                    <label class="pixel-check"><input type="checkbox" value="submit_form" /> submit_form (폼 제출)</label>
+                    <label class="pixel-check"><input type="checkbox" value="add_to_cart" /> add_to_cart (장바구니)</label>
+                    <label class="pixel-check"><input type="checkbox" value="begin_checkout" /> begin_checkout (결제시작)</label>
+                    <label class="pixel-check"><input type="checkbox" value="purchase" /> purchase (구매)</label>
+                  </div>
+                  <div class="form-row">
+                    <label for="pixel_gads_id">Google Ads ID (AW-…)</label>
+                    <input type="text" id="pixel_gads_id" data-pixel-field="google_ads_id" placeholder="예: AW-XXXXXXXX" autocomplete="off" />
+                  </div>
+                  <div class="form-row">
+                    <label for="pixel_gads_label">기본 전환 라벨</label>
+                    <input type="text" id="pixel_gads_label" data-pixel-field="google_ads_label" placeholder="전환 액션 라벨" autocomplete="off" />
+                  </div>
                   <div class="grid-2">
                     <div class="form-row">
-                      <label for="pixel_gads_id">Google Ads 전환 ID</label>
-                      <input type="text" id="pixel_gads_id" data-pixel-field="google_ads_id" placeholder="예: AW-XXXXXXXX" autocomplete="off" />
+                      <label for="pixel_gads_label_lead">리드 전환 라벨 (선택)</label>
+                      <input type="text" id="pixel_gads_label_lead" data-pixel-field="google_ads_label_lead" placeholder="Lead용 라벨" autocomplete="off" />
                     </div>
                     <div class="form-row">
-                      <label for="pixel_gads_label">전환 라벨</label>
-                      <input type="text" id="pixel_gads_label" data-pixel-field="google_ads_label" placeholder="예: abCdEfGhIjKlMnOp" autocomplete="off" />
+                      <label for="pixel_gads_label_purchase">구매 전환 라벨 (선택)</label>
+                      <input type="text" id="pixel_gads_label_purchase" data-pixel-field="google_ads_label_purchase" placeholder="Purchase용 라벨" autocomplete="off" />
                     </div>
                   </div>
+                  <label class="pixel-check pixel-check-block">
+                    <input type="checkbox" id="pixel_gads_remarketing" data-pixel-field="google_ads_remarketing" data-pixel-bool="1" value="1" />
+                    Google Ads 리마케팅 / enhanced conversions 설정 포함
+                  </label>
                   <div class="form-row">
                     <label for="pixel_gtm_id">GTM 컨테이너 ID</label>
                     <input type="text" id="pixel_gtm_id" data-pixel-field="google_gtm_id" placeholder="예: GTM-XXXXXXX" autocomplete="off" />
@@ -323,17 +386,29 @@
                 </summary>
                 <div class="pixel-acc-body">
                   <p class="pixel-help">
-                    · <strong>네이버 분석(WCS)</strong>: 공통 스크립트의 <code>wcs_add["wa"]</code> 값<br />
-                    · <strong>검색광고 전환</strong>: 전환 추적에 쓰는 전환 값/ID (있으면 전환 이벤트도 전송)<br />
-                    스크립트 전문이 아니라 <strong>ID 값만</strong> 넣어 주세요.
+                    <code>wcs_add["wa"]</code> 계정 ID 필수.<br />
+                    전환 유형을 고르면 <code>wcs.cnv(유형, 값)</code> 전환도 함께 전송. 비우면 페이지뷰(유입)만.
                   </p>
                   <div class="form-row">
                     <label for="pixel_naver_wcs">네이버 분석(WCS) 계정 ID</label>
                     <input type="text" id="pixel_naver_wcs" data-pixel-field="naver_wcs_id" placeholder="wcs_add[&quot;wa&quot;] 값" autocomplete="off" />
                   </div>
-                  <div class="form-row">
-                    <label for="pixel_naver_cnv">검색광고 전환 값</label>
-                    <input type="text" id="pixel_naver_cnv" data-pixel-field="naver_search_conversion_id" placeholder="wcs.cnv 에 넣는 전환 값 (선택)" autocomplete="off" />
+                  <div class="grid-2">
+                    <div class="form-row">
+                      <label for="pixel_naver_type">전환 유형</label>
+                      <select id="pixel_naver_type" data-pixel-field="naver_cnv_type">
+                        <option value="">없음 (페이지뷰만)</option>
+                        <option value="1">1 — 구매</option>
+                        <option value="2">2 — 회원가입</option>
+                        <option value="3">3 — 장바구니</option>
+                        <option value="4">4 — 신청/예약 (리드)</option>
+                        <option value="5">5 — 기타</option>
+                      </select>
+                    </div>
+                    <div class="form-row">
+                      <label for="pixel_naver_val">전환 값</label>
+                      <input type="text" id="pixel_naver_val" data-pixel-field="naver_cnv_value" placeholder="금액 또는 1" autocomplete="off" />
+                    </div>
                   </div>
                 </div>
               </details>
@@ -345,30 +420,27 @@
                 </summary>
                 <div class="pixel-acc-body">
                   <p class="pixel-help">
-                    카카오 모먼트 → 픽셀 관리 → 픽셀 ID.<br />
-                    입력 시 <code>pageView</code> 가 자동 전송됩니다.
+                    카카오 모먼트 → 픽셀 ID.<br />
+                    문의·신청 랜딩은 <code>participation</code> (참여/리드), 가입은 <code>signUp</code>.
                   </p>
                   <div class="form-row">
                     <label for="pixel_kakao_id">카카오 픽셀 ID</label>
                     <input type="text" id="pixel_kakao_id" data-pixel-field="kakao_pixel_id" placeholder="예: 1234567890123456789" autocomplete="off" />
                   </div>
-                </div>
-              </details>
-
-              <details class="pixel-acc">
-                <summary>
-                  <span class="pixel-acc-name">기타 · 커스텀 스크립트</span>
-                  <span class="pixel-acc-badge" data-pixel-badge="custom" hidden>입력됨</span>
-                </summary>
-                <div class="pixel-acc-body">
-                  <p class="pixel-help">
-                    위 매체에 없는 태그(예: 크리테오, 애드피라 등)는 광고 콘솔에서 받은
-                    <code>&lt;script&gt;…&lt;/script&gt;</code> 를 그대로 붙여 넣으세요.
-                    비우면 삽입되지 않습니다.
-                  </p>
+                  <div class="pixel-event-label">전송할 이벤트 (복수 선택)</div>
+                  <div class="pixel-checks" data-pixel-events="kakao_events">
+                    <label class="pixel-check"><input type="checkbox" value="pageView" checked /> pageView (페이지 조회)</label>
+                    <label class="pixel-check"><input type="checkbox" value="participation" /> participation (참여·문의·리드)</label>
+                    <label class="pixel-check"><input type="checkbox" value="signUp" /> signUp (가입)</label>
+                    <label class="pixel-check"><input type="checkbox" value="viewContent" /> viewContent (콘텐츠 조회)</label>
+                    <label class="pixel-check"><input type="checkbox" value="search" /> search (검색)</label>
+                    <label class="pixel-check"><input type="checkbox" value="addToCart" /> addToCart (장바구니)</label>
+                    <label class="pixel-check"><input type="checkbox" value="addToWishList" /> addToWishList (찜)</label>
+                    <label class="pixel-check"><input type="checkbox" value="purchase" /> purchase (구매)</label>
+                  </div>
                   <div class="form-row">
-                    <label for="pixel_custom_html">커스텀 head 스크립트</label>
-                    <textarea id="pixel_custom_html" data-pixel-field="custom_head_html" rows="5" placeholder="&lt;script&gt;…&lt;/script&gt;"></textarea>
+                    <label for="pixel_kakao_purchase_value">purchase 금액 (선택)</label>
+                    <input type="text" id="pixel_kakao_purchase_value" data-pixel-field="kakao_purchase_value" placeholder="예: 99000" autocomplete="off" />
                   </div>
                 </div>
               </details>

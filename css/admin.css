@@ -3036,3 +3036,54 @@ img.cm-avatar {
   color: #9aefc8;
   background: rgba(11, 110, 79, 0.35);
 }
+
+.pixel-event-label {
+  margin: 10px 0 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #444;
+}
+
+.pixel-checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px 10px;
+  margin-bottom: 12px;
+}
+
+.pixel-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  cursor: pointer;
+  margin: 0;
+}
+
+.pixel-check input {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.pixel-check-block {
+  margin: 4px 0 12px;
+}
+
+.pixel-acc-body select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+}
+
+[data-admin-theme='dark'] .pixel-event-label {
+  color: #ccc;
+}
+
+[data-admin-theme='dark'] .pixel-acc-body select {
+  background: var(--admin-panel);
+  color: inherit;
+}

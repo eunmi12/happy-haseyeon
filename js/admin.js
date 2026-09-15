@@ -269,34 +269,42 @@ function syncPixelUiForCategory(category) {
   if (box) box.hidden = category !== AD_CATEGORY;
 }
 
-const PIXEL_FIELD_IDS = [
-  'meta_pixel_id',
-  'tiktok_pixel_id',
-  'google_ga4_id',
-  'google_ads_id',
-  'google_ads_label',
-  'google_gtm_id',
-  'naver_wcs_id',
-  'naver_search_conversion_id',
-  'kakao_pixel_id',
-  'custom_head_html',
-];
-
 const PIXEL_BADGE_GROUPS = {
-  meta: ['meta_pixel_id'],
-  tiktok: ['tiktok_pixel_id'],
-  google: ['google_ga4_id', 'google_ads_id', 'google_ads_label', 'google_gtm_id'],
-  naver: ['naver_wcs_id', 'naver_search_conversion_id'],
-  kakao: ['kakao_pixel_id'],
-  custom: ['custom_head_html'],
+  meta: ['meta_pixel_id', 'meta_events'],
+  tiktok: ['tiktok_pixel_id', 'tiktok_events'],
+  google: [
+    'google_ga4_id',
+    'google_ga4_events',
+    'google_ads_id',
+    'google_ads_label',
+    'google_ads_label_lead',
+    'google_ads_label_purchase',
+    'google_gtm_id',
+    'google_ads_remarketing',
+  ],
+  naver: ['naver_wcs_id', 'naver_cnv_type', 'naver_cnv_value'],
+  kakao: ['kakao_pixel_id', 'kakao_events'],
 };
 
 function getAdPixelsFromForm() {
   const out = {};
   document.querySelectorAll('[data-pixel-field]').forEach((el) => {
     const key = el.dataset.pixelField;
-    const val = String(el.value || '').trim();
-    if (val) out[key] = val;
+    if (el.dataset.pixelBool === '1') {
+      if (el.checked) out[key] = '1';
+      return;
+    }
+    if (el.tagName === 'SELECT' || el.type === 'text' || el.tagName === 'TEXTAREA' || el.type === 'number') {
+      const val = String(el.value || '').trim();
+      if (val) out[key] = val;
+    }
+  });
+  document.querySelectorAll('[data-pixel-events]').forEach((wrap) => {
+    const key = wrap.dataset.pixelEvents;
+    const selected = [...wrap.querySelectorAll('input[type="checkbox"]:checked')].map(
+      (c) => c.value
+    );
+    if (selected.length) out[key] = selected.join(',');
   });
   return out;
 }
@@ -311,16 +319,46 @@ function setAdPixelsToForm(raw) {
       obj = {};
     }
   }
+
   document.querySelectorAll('[data-pixel-field]').forEach((el) => {
     const key = el.dataset.pixelField;
-    el.value = obj[key] || '';
+    if (el.dataset.pixelBool === '1') {
+      el.checked = obj[key] === '1' || obj[key] === 'true';
+      return;
+    }
+    el.value = obj[key] || (key === 'meta_purchase_currency' ? 'KRW' : '');
+  });
+
+  document.querySelectorAll('[data-pixel-events]').forEach((wrap) => {
+    const key = wrap.dataset.pixelEvents;
+    const selected = new Set(
+      String(obj[key] || '')
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+    );
+    wrap.querySelectorAll('input[type="checkbox"]').forEach((c) => {
+      if (selected.size === 0 && (c.value === 'PageView' || c.value === 'pageView')) {
+        c.checked = true;
+      } else {
+        c.checked = selected.has(c.value);
+      }
+    });
   });
   refreshPixelBadges();
 }
 
 function clearAdPixelsForm() {
   document.querySelectorAll('[data-pixel-field]').forEach((el) => {
-    el.value = '';
+    if (el.dataset.pixelBool === '1') {
+      el.checked = false;
+      return;
+    }
+    if (el.tagName === 'SELECT') el.value = '';
+    else el.value = el.dataset.pixelField === 'meta_purchase_currency' ? 'KRW' : '';
+  });
+  document.querySelectorAll('[data-pixel-events] input[type="checkbox"]').forEach((c) => {
+    c.checked = c.value === 'PageView' || c.value === 'pageView';
   });
   refreshPixelBadges();
 }
@@ -330,13 +368,14 @@ function refreshPixelBadges() {
   Object.entries(PIXEL_BADGE_GROUPS).forEach(([group, keys]) => {
     const badge = document.querySelector(`[data-pixel-badge="${group}"]`);
     if (!badge) return;
-    const filled = keys.some((k) => !!data[k]);
+    const idKeys = keys.filter((k) => !k.endsWith('_events'));
+    const filled = idKeys.some((k) => !!data[k]);
     badge.hidden = !filled;
   });
 }
 
 function bindPixelFieldListeners() {
-  document.querySelectorAll('[data-pixel-field]').forEach((el) => {
+  document.querySelectorAll('[data-pixel-field], [data-pixel-events] input').forEach((el) => {
     if (el.dataset.pixelBound) return;
     el.dataset.pixelBound = '1';
     el.addEventListener('input', refreshPixelBadges);
