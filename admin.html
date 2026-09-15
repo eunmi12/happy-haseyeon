@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <base href="/" />
+  <title>관리자 — 행복하서연</title>
+  <link rel="stylesheet" href="/css/common.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suneditor@2.47.0/dist/css/suneditor.min.css" />
+  <link rel="stylesheet" href="/css/admin.css?v=20260723-pwnav1" />
+</head>
+<body class="admin-body">
+  <div id="loginView" class="login-wrap">
+    <div class="login-box">
+      <div class="login-brand">행복하서연</div>
+      <h1>관리자 로그인</h1>
+      <p class="sub">비밀번호를 입력해 주세요</p>
+      <div class="msg err" id="loginMsg"></div>
+      <form id="loginForm">
+        <div class="form-row">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" autocomplete="current-password" required autofocus />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">로그인</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="adminView" class="admin-shell" hidden>
+    <div class="admin-nav-backdrop" id="adminNavBackdrop" hidden></div>
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-head">
+        <div>
+          <div class="sidebar-brand">행복하서연</div>
+          <p class="sidebar-label">관리자</p>
+        </div>
+        <button type="button" class="admin-nav-close" id="btnCloseAdminNav" aria-label="메뉴 닫기">×</button>
+      </div>
+      <nav class="admin-nav" id="adminNav">
+        <div class="nav-section is-open" data-nav-section="ad">
+          <button type="button" class="nav-section-toggle" aria-expanded="true">
+            <span class="nav-section-title">광고</span>
+            <span class="nav-chevron" aria-hidden="true"></span>
+          </button>
+          <div class="nav-section-body">
+            <button type="button" data-panel="edit" data-category="광고">광고 블로그 작성</button>
+            <button type="button" data-panel="ad-posts" class="active">광고 블로그 목록</button>
+            <button type="button" data-panel="ad-comments">광고 블로그 댓글</button>
+            <button type="button" data-panel="ad-stats">광고 조회수 리포트</button>
+          </div>
+        </div>
+
+        <div class="nav-section" data-nav-section="main">
+          <button type="button" class="nav-section-toggle" aria-expanded="false">
+            <span class="nav-section-title">메인페이지관리</span>
+            <span class="nav-chevron" aria-hidden="true"></span>
+          </button>
+          <div class="nav-section-body">
+            <button type="button" data-panel="posts">게시글</button>
+            <p class="nav-sub">게시판 작성</p>
+            <button type="button" data-panel="edit" data-category="인기글">인기글 작성</button>
+            <button type="button" data-panel="edit" data-category="자유게시판">자유게시판 작성</button>
+            <button type="button" data-panel="edit" data-category="후기">후기 작성</button>
+            <button type="button" data-panel="edit" data-category="공지">공지 작성</button>
+            <p class="nav-sub">관리</p>
+            <button type="button" data-panel="comments">댓글</button>
+            <button type="button" data-panel="main-stats">조회수 리포트</button>
+            <button type="button" data-panel="tags">인기 태그</button>
+            <button type="button" data-panel="notices">공지 목록</button>
+            <button type="button" data-panel="settings">프로필/설정</button>
+          </div>
+        </div>
+
+        <button type="button" class="nav-standalone" data-panel="password">비밀번호 변경</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="theme-switch" id="themeSwitch">
+          <p class="theme-switch-label">화면 모드</p>
+          <div class="theme-toggle" role="group" aria-label="화면 모드">
+            <span class="theme-toggle-thumb" aria-hidden="true"></span>
+            <button type="button" class="theme-btn active" data-theme-set="light" title="라이트 모드">
+              <span class="theme-ico theme-ico-sun" aria-hidden="true"></span>
+              <span class="theme-btn-text">라이트</span>
+            </button>
+            <button type="button" class="theme-btn" data-theme-set="dark" title="다크 모드">
+              <span class="theme-ico theme-ico-moon" aria-hidden="true"></span>
+              <span class="theme-btn-text">다크</span>
+            </button>
+          </div>
+        </div>
+        <a href="/" target="_blank">사이트 보기</a>
+        <button type="button" id="btnLogout">로그아웃</button>
+      </div>
+    </aside>
+
+    <div class="admin-content">
+      <header class="admin-topbar">
+        <button type="button" class="admin-menu-btn" id="btnOpenAdminNav" aria-label="메뉴 열기" aria-expanded="false">
+          <span class="admin-menu-icon" aria-hidden="true"></span>
+        </button>
+        <h1 id="pageTitle">광고 블로그 목록</h1>
+      </header>
+
+      <main class="admin-main">
+        <div class="msg" id="toast"></div>
+
+        <section class="panel" id="panel-posts">
+          <div class="toolbar">
+            <select id="postsFilter" class="filter-select">
+              <option value="">전체 카테고리</option>
+              <option value="인기글">인기글</option>
+              <option value="자유게시판">자유게시판</option>
+              <option value="후기">후기</option>
+              <option value="공지">공지</option>
+            </select>
+            <button type="button" class="btn btn-ghost" id="btnRefreshPosts">새로고침</button>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>카테고리</th>
+                  <th>주소</th>
+                  <th>추천</th>
+                  <th>날짜</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="postsBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel panel-edit" id="panel-edit">
+          <div class="editor-workspace">
+            <div class="editor-meta">
+              <div class="editor-meta-top">
+                <button type="button" class="btn btn-ghost btn-sm" id="btnBackFromEditor">← 목록</button>
+                <button type="button" class="btn btn-ghost btn-sm admin-editor-menu" id="btnOpenAdminNavEditor">메뉴</button>
+              </div>
+              <h2 id="editTitle">새 글 작성</h2>
+              <input type="hidden" id="postId" />
+              <input type="hidden" id="lockedCategory" value="후기" />
+              <div class="form-row">
+                <label>게시판</label>
+                <input type="text" id="categoryDisplay" readonly />
+              </div>
+              <div class="form-row" id="slugRowNormal">
+                <label>상세 주소 (slug)</label>
+                <input type="text" id="slug" placeholder="비우면 자동 생성 (예: fv75tanm)" />
+                <p class="form-hint">주소 예: /fv75tanm — 영문·숫자 권장</p>
+              </div>
+              <div class="form-row">
+                <label>제목</label>
+                <input type="text" id="title" />
+              </div>
+              <div class="grid-2">
+                <div class="form-row">
+                  <label>작성일 표시</label>
+                  <input type="text" id="published_at" placeholder="2026년 6월 28일" />
+                </div>
+                <div class="form-row">
+                  <label>추천수</label>
+                  <input type="number" id="likes" value="0" min="0" />
+                </div>
+              </div>
+              <div class="form-row">
+                <label>댓글수 (표시용)</label>
+                <input type="number" id="comment_count_display" value="0" min="0" />
+                <p class="form-hint">반응바 💬 숫자에 표시됩니다. 실제 등록된 댓글 개수와 별개로 설정할 수 있습니다.</p>
+              </div>
+              <div class="form-row cover-upload-block">
+                <label>대표 이미지 (목록·인기글 썸네일)</label>
+                <div class="cover-upload-box">
+                  <div class="cover-preview-wrap">
+                    <img id="coverPreview" class="cover-preview-lg" alt="대표 이미지 미리보기" hidden />
+                    <div class="cover-preview-empty" id="coverPreviewEmpty">이미지를 선택하면 미리보기가 표시됩니다</div>
+                  </div>
+                  <div class="cover-status" id="coverStatus" hidden></div>
+                  <div class="cover-upload-actions">
+                    <input type="text" id="cover_image" placeholder="업로드되면 URL이 여기에 채워집니다" />
+                    <div class="cover-upload-btns">
+                      <label class="btn btn-cover-upload" for="coverFile" id="coverFileLabel">
+                        이미지 선택
+                        <input type="file" id="coverFile" accept="image/*" hidden />
+                      </label>
+                      <button type="button" class="btn btn-primary" id="btnUploadCover">다시 업로드</button>
+                    </div>
+                  </div>
+                </div>
+                <p class="form-hint">
+                  권장 사이즈: <strong>1200 × 750px</strong> (가로 16:10) · JPG/PNG · 1MB 이하 권장<br />
+                  최소 <strong>800 × 500px</strong> 이상 · 세로·정사각은 목록에서 잘릴 수 있어요<br />
+                  이미지 선택 시 자동 업로드 · 게시글 「저장」을 눌러야 반영됩니다
+                </p>
+              </div>
+
+              <!-- SEO 직접 입력: 당분간 비활성 (제목·본문으로 자동 생성)
+              <div class="seo-box">
+                <h3 class="seo-box-title">검색 노출 (SEO)</h3>
+                <p class="form-hint">비워 두면 제목·본문 앞부분으로 자동 생성됩니다. 중요한 글은 직접 적어 주세요.</p>
+                <div class="form-row">
+                  <label for="seo_title">검색용 제목</label>
+                  <input type="text" id="seo_title" maxlength="70" placeholder="검색 결과에 보일 제목 (권장 50자 내외)" />
+                  <p class="form-hint"><span id="seoTitleCount">0</span>/70</p>
+                </div>
+                <div class="form-row">
+                  <label for="seo_description">검색용 설명</label>
+                  <textarea id="seo_description" rows="3" maxlength="160" placeholder="검색 결과 요약 문구 (권장 80~150자)"></textarea>
+                  <p class="form-hint"><span id="seoDescCount">0</span>/160</p>
+                </div>
+                <div class="seo-preview" aria-label="검색 결과 미리보기">
+                  <div class="seo-preview-label">구글·네이버 미리보기</div>
+                  <div class="seo-preview-url" id="seoPreviewUrl">https://happy-haseyeon.pages.dev/…</div>
+                  <div class="seo-preview-title" id="seoPreviewTitle">(제목)</div>
+                  <div class="seo-preview-desc" id="seoPreviewDesc">(설명)</div>
+                </div>
+              </div>
+              -->
+              <p class="form-hint" style="margin-top:4px">
+                검색 노출(SEO)은 <strong>제목·본문</strong> 기준으로 자동 설정됩니다.
+              </p>
+            </div>
+            <div class="form-row editor-body-row">
+              <div class="editor-label-row">
+                <label>본문</label>
+                <div class="editor-quick-actions">
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnInsertLinkCard" title="URL을 링크 썸네일 카드로 삽입">링크 썸네일</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnCenterLinkCard" title="선택한(또는 마지막) 링크 썸네일 가운데 정렬">링크 가운데</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnMoveBlockUp" title="선택 문단/이미지를 위로">↑ 위로</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnMoveBlockDown" title="선택 문단/이미지를 아래로">↓ 아래로</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnInsertParaAbove" title="커서 앞에 빈 문단">＋ 위에 문단</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnInsertParaBelow" title="이미지/커서 뒤에 빈 문단">＋ 아래에 문단</button>
+                </div>
+              </div>
+              <textarea id="body"></textarea>
+              <p class="form-hint">이미지·네이버 복붙·외부 URL도 「저장」 시 자동으로 우리 서버(R2)에 복사됩니다. URL 붙여넣기·텍스트 URL은 썸네일 카드가 됩니다. 「링크 가운데」로 카드 정렬을 바꿀 수 있습니다.</p>
+            </div>
+            <div class="toolbar editor-toolbar">
+              <button type="button" class="btn btn-primary" id="btnSavePost">저장</button>
+              <button type="button" class="btn btn-ghost" id="btnPreview">미리보기</button>
+              <button type="button" class="btn btn-danger" id="btnDeletePost" style="display:none">삭제</button>
+              <button type="button" class="btn btn-ghost btn-editor-list" id="btnBackFromEditorBar">목록</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel active" id="panel-ad-posts">
+          <div class="toolbar">
+            <button type="button" class="btn btn-primary" id="btnNewAdPost">광고 블로그 작성</button>
+            <button type="button" class="btn btn-ghost" id="btnRefreshAdPosts">새로고침</button>
+          </div>
+          <p class="form-hint" style="margin-bottom:12px">
+            광고 블로그는 <strong>메인(index)에 노출되지 않습니다</strong>.
+            목록의 URL을 누르면 해당 광고 글로 이동합니다.
+          </p>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>도메인 URL</th>
+                  <th>추천</th>
+                  <th>날짜</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="adPostsBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-comments">
+          <div class="cm-layout">
+            <aside class="cm-posts">
+              <div class="cm-posts-head">
+                <h2>게시글</h2>
+                <input type="search" id="commentPostSearch" placeholder="제목 검색…" autocomplete="off" />
+              </div>
+              <div class="cm-post-list" id="commentPostList">
+                <p class="cm-empty">게시글을 불러오는 중…</p>
+              </div>
+            </aside>
+
+            <div class="cm-main">
+              <div class="cm-main-head" id="commentMainHead">
+                <div>
+                  <h2 id="commentSelectedTitle">게시글을 선택하세요</h2>
+                  <p class="cm-sub" id="commentSelectedMeta">왼쪽에서 글을 고르면 댓글이 표시됩니다</p>
+                </div>
+                <span class="cm-count-badge" id="commentCountBadge" hidden>0</span>
+              </div>
+
+              <div class="cm-list-wrap" id="commentsList">
+                <p class="cm-empty">왼쪽 목록에서 게시글을 선택해 주세요.</p>
+              </div>
+
+              <div class="cm-composer" id="commentComposer" hidden>
+                <div class="cm-composer-title">댓글 빠른 추가</div>
+                <div class="cm-reply-target" id="cReplyTarget" hidden>
+                  <span id="cReplyTargetText"></span>
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnCancelReply">취소</button>
+                </div>
+                <input type="hidden" id="cParentId" value="" />
+                <div class="cm-composer-row">
+                  <div class="cm-field cm-field-avatar">
+                    <label>프로필</label>
+                    <div class="cm-avatar-edit">
+                      <div class="cm-avatar-preview" id="cAvatarPreview">?</div>
+                      <div class="cm-avatar-controls">
+                        <input type="text" id="cProfileImage" placeholder="프로필 이미지 URL (비우면 이니셜)" />
+                        <label class="btn btn-ghost btn-sm" for="cProfileFile">사진 선택
+                          <input type="file" id="cProfileFile" accept="image/*" hidden />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cm-field">
+                    <label for="cAuthor">닉네임</label>
+                    <input type="text" id="cAuthor" placeholder="작성자 닉네임" maxlength="40" />
+                  </div>
+                  <div class="cm-field">
+                    <label for="cDate">날짜 표시</label>
+                    <input type="text" id="cDate" placeholder="예: 1일 전, 방금 전" value="방금 전" />
+                  </div>
+                  <div class="cm-field cm-field-likes">
+                    <label for="cLikes">추천</label>
+                    <input type="number" id="cLikes" placeholder="추천수 예: 12" value="0" min="0" title="추천수" />
+                  </div>
+                  <div class="cm-field cm-field-dislikes">
+                    <label for="cDislikes">비추천</label>
+                    <input type="number" id="cDislikes" placeholder="비추천수 예: 1" value="0" min="0" title="비추천수" />
+                  </div>
+                </div>
+                <textarea id="cContent" rows="2" placeholder="댓글 내용 입력 후 Enter 또는 등록 (Shift+Enter 줄바꿈)"></textarea>
+                <input type="hidden" id="cOrder" value="0" />
+                <div class="cm-composer-actions">
+                  <span class="form-hint">프로필 사진은 선택사항 · 비우면 닉네임 이니셜 표시</span>
+                  <button type="button" class="btn btn-primary" id="btnAddComment">등록</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-ad-comments">
+          <div class="cm-layout">
+            <aside class="cm-posts">
+              <div class="cm-posts-head">
+                <h2>광고 블로그</h2>
+                <input type="search" id="adCommentPostSearch" placeholder="제목·코드 검색…" autocomplete="off" />
+              </div>
+              <div class="cm-post-list" id="adCommentPostList">
+                <p class="cm-empty">광고 글을 불러오는 중…</p>
+              </div>
+            </aside>
+
+            <div class="cm-main">
+              <div class="cm-main-head" id="adCommentMainHead">
+                <div>
+                  <h2 id="adCommentSelectedTitle">광고 글을 선택하세요</h2>
+                  <p class="cm-sub" id="adCommentSelectedMeta">왼쪽에서 글을 고르면 댓글이 표시됩니다</p>
+                </div>
+                <span class="cm-count-badge" id="adCommentCountBadge" hidden>0</span>
+              </div>
+
+              <div class="cm-list-wrap" id="adCommentsList">
+                <p class="cm-empty">왼쪽 목록에서 광고 블로그를 선택해 주세요.</p>
+              </div>
+
+              <div class="cm-composer" id="adCommentComposer" hidden>
+                <div class="cm-composer-title">광고 댓글 빠른 추가</div>
+                <div class="cm-reply-target" id="adCReplyTarget" hidden>
+                  <span id="adCReplyTargetText"></span>
+                  <button type="button" class="btn btn-ghost btn-sm" id="btnCancelAdReply">취소</button>
+                </div>
+                <input type="hidden" id="adCParentId" value="" />
+                <div class="cm-composer-row">
+                  <div class="cm-field cm-field-avatar">
+                    <label>프로필</label>
+                    <div class="cm-avatar-edit">
+                      <div class="cm-avatar-preview" id="adCAvatarPreview">?</div>
+                      <div class="cm-avatar-controls">
+                        <input type="text" id="adCProfileImage" placeholder="프로필 이미지 URL (비우면 이니셜)" />
+                        <label class="btn btn-ghost btn-sm" for="adCProfileFile">사진 선택
+                          <input type="file" id="adCProfileFile" accept="image/*" hidden />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cm-field">
+                    <label for="adCAuthor">닉네임</label>
+                    <input type="text" id="adCAuthor" placeholder="작성자 닉네임" maxlength="40" />
+                  </div>
+                  <div class="cm-field">
+                    <label for="adCDate">날짜 표시</label>
+                    <input type="text" id="adCDate" placeholder="예: 1일 전, 방금 전" value="방금 전" />
+                  </div>
+                  <div class="cm-field cm-field-likes">
+                    <label for="adCLikes">추천</label>
+                    <input type="number" id="adCLikes" placeholder="추천수 예: 12" value="0" min="0" title="추천수" />
+                  </div>
+                  <div class="cm-field cm-field-dislikes">
+                    <label for="adCDislikes">비추천</label>
+                    <input type="number" id="adCDislikes" placeholder="비추천수 예: 1" value="0" min="0" title="비추천수" />
+                  </div>
+                </div>
+                <textarea id="adCContent" rows="2" placeholder="댓글 내용 입력 후 Enter 또는 등록 (Shift+Enter 줄바꿈)"></textarea>
+                <input type="hidden" id="adCOrder" value="0" />
+                <div class="cm-composer-actions">
+                  <span class="form-hint">프로필 사진은 선택사항 · 비우면 닉네임 이니셜 표시</span>
+                  <button type="button" class="btn btn-primary" id="btnAddAdComment">등록</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-ad-stats">
+          <p class="stats-lead">광고 블로그 전용 일별 조회수입니다. 메인 게시글·홈 방문과는 분리되어 있습니다.</p>
+          <div class="stats-toolbar">
+            <input type="search" id="adStatsSearch" class="stats-search" placeholder="제목·코드 검색…" autocomplete="off" />
+            <label class="stats-date-label">기간
+              <input type="date" id="adStatsFrom" />
+            </label>
+            <span class="stats-date-sep">~</span>
+            <label class="stats-date-label">
+              <input type="date" id="adStatsTo" />
+            </label>
+            <button type="button" class="btn btn-primary" id="btnAdStatsSearch">조회</button>
+            <button type="button" class="btn btn-ghost" id="btnAdStatsRefresh">새로고침</button>
+          </div>
+          <div class="cm-layout stats-layout">
+            <aside class="cm-posts">
+              <div class="cm-posts-head">
+                <h2>광고 글</h2>
+              </div>
+              <div class="cm-post-list" id="adStatsPostList">
+                <p class="cm-empty">불러오는 중…</p>
+              </div>
+            </aside>
+            <div class="cm-main">
+              <div class="cm-main-head">
+                <div>
+                  <h2 id="adStatsSelectedTitle">광고 글을 선택하세요</h2>
+                  <p class="cm-sub" id="adStatsSelectedMeta">왼쪽에서 글을 고르면 일별 조회수가 표시됩니다</p>
+                </div>
+                <div class="stats-summary" id="adStatsSummary" hidden>
+                  <span class="stats-chip">오늘 <em id="adStatsToday">0</em></span>
+                  <span class="stats-chip">기간 <em id="adStatsRange">0</em></span>
+                </div>
+              </div>
+              <div class="table-wrap stats-table-wrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>날짜</th>
+                      <th>조회수</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adStatsDaysBody">
+                    <tr><td colspan="2">글을 선택해 주세요.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-main-stats">
+          <p class="stats-lead">메인 홈·일반 게시글 조회수입니다. 광고 블로그 통계와는 별도 화면입니다.</p>
+
+          <div class="stats-home-card">
+            <div class="stats-home-head">
+              <h2>메인 홈페이지 방문</h2>
+              <div class="stats-toolbar stats-toolbar-inline">
+                <label class="stats-date-label">기간
+                  <input type="date" id="homeStatsFrom" />
+                </label>
+                <span class="stats-date-sep">~</span>
+                <label class="stats-date-label">
+                  <input type="date" id="homeStatsTo" />
+                </label>
+                <button type="button" class="btn btn-primary btn-sm" id="btnHomeStatsSearch">조회</button>
+              </div>
+            </div>
+            <div class="stats-summary stats-summary-row">
+              <span class="stats-chip">오늘 <em id="homeStatsToday">0</em></span>
+              <span class="stats-chip">기간 합계 <em id="homeStatsRange">0</em></span>
+            </div>
+            <div class="table-wrap stats-table-wrap stats-table-compact">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>날짜</th>
+                    <th>방문자</th>
+                  </tr>
+                </thead>
+                <tbody id="homeStatsDaysBody">
+                  <tr><td colspan="2">불러오는 중…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h2 class="stats-section-title">메인 게시글 일별 조회수</h2>
+          <div class="stats-toolbar">
+            <input type="search" id="mainStatsSearch" class="stats-search" placeholder="제목·주소 검색…" autocomplete="off" />
+            <select id="mainStatsCategory" class="filter-select">
+              <option value="">전체 카테고리</option>
+              <option value="인기글">인기글</option>
+              <option value="자유게시판">자유게시판</option>
+              <option value="후기">후기</option>
+              <option value="공지">공지</option>
+            </select>
+            <label class="stats-date-label">기간
+              <input type="date" id="mainStatsFrom" />
+            </label>
+            <span class="stats-date-sep">~</span>
+            <label class="stats-date-label">
+              <input type="date" id="mainStatsTo" />
+            </label>
+            <button type="button" class="btn btn-primary" id="btnMainStatsSearch">조회</button>
+            <button type="button" class="btn btn-ghost" id="btnMainStatsRefresh">새로고침</button>
+          </div>
+          <div class="cm-layout stats-layout">
+            <aside class="cm-posts">
+              <div class="cm-posts-head">
+                <h2>게시글</h2>
+              </div>
+              <div class="cm-post-list" id="mainStatsPostList">
+                <p class="cm-empty">불러오는 중…</p>
+              </div>
+            </aside>
+            <div class="cm-main">
+              <div class="cm-main-head">
+                <div>
+                  <h2 id="mainStatsSelectedTitle">게시글을 선택하세요</h2>
+                  <p class="cm-sub" id="mainStatsSelectedMeta">왼쪽에서 글을 고르면 일별 조회수가 표시됩니다</p>
+                </div>
+                <div class="stats-summary" id="mainStatsSummary" hidden>
+                  <span class="stats-chip">오늘 <em id="mainStatsToday">0</em></span>
+                  <span class="stats-chip">기간 <em id="mainStatsRange">0</em></span>
+                </div>
+              </div>
+              <div class="table-wrap stats-table-wrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>날짜</th>
+                      <th>조회수</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mainStatsDaysBody">
+                    <tr><td colspan="2">글을 선택해 주세요.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-tabs">
+          <h2>카페 탭 관리</h2>
+          <p class="form-hint" style="margin-bottom:16px">
+            메인 상단 탭입니다. 홈·전체글·인기글·자유게시판·후기·공지 이름을 유지하면 각 게시판 페이지와 연결됩니다.
+          </p>
+          <div id="tabsList" class="tabs-list"></div>
+          <div class="toolbar" style="margin-top:12px">
+            <button type="button" class="btn btn-ghost" id="btnAddTab">탭 추가</button>
+            <button type="button" class="btn btn-primary" id="btnSaveTabs">탭 저장</button>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-tags">
+          <h2>인기 태그 관리</h2>
+          <p class="form-hint" style="margin-bottom:16px">사이드바 인기 태그 키워드를 직접 입력합니다.</p>
+          <div id="tagsList" class="tabs-list"></div>
+          <div class="toolbar" style="margin-top:12px">
+            <button type="button" class="btn btn-ghost" id="btnAddTag">태그 추가</button>
+            <button type="button" class="btn btn-primary" id="btnSaveTags">태그 저장</button>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-notices">
+          <h2>공지 목록</h2>
+          <p class="form-hint" style="margin-bottom:12px">
+            홈·공지게시판에 보이는 글입니다. 카테고리가 <strong>공지</strong>인 게시글만 표시됩니다.
+            새 공지는 「공지 작성」으로 올리세요.
+          </p>
+          <div class="toolbar" style="margin-bottom:12px">
+            <button type="button" class="btn btn-primary" id="btnNewNoticePost">공지 작성</button>
+            <button type="button" class="btn btn-ghost" id="btnRefreshNotices">새로고침</button>
+          </div>
+          <div id="noticesAdminList"></div>
+        </section>
+
+        <section class="panel" id="panel-settings">
+          <h2>블로그 / 프로필 설정</h2>
+          <div class="form-row">
+            <label>블로그명 (상세 상단)</label>
+            <input type="text" id="blog_name" />
+          </div>
+          <div class="form-row">
+            <label>프로필 이름</label>
+            <input type="text" id="profile_name" />
+          </div>
+          <div class="form-row">
+            <label>프로필 사진</label>
+            <div class="upload-row">
+              <input type="text" id="profile_image" placeholder="이미지 URL 또는 업로드" style="flex:1" />
+              <input type="file" id="profileFile" accept="image/*" />
+              <button type="button" class="btn btn-ghost btn-sm" id="btnUploadProfile">업로드</button>
+            </div>
+            <img id="profilePreview" class="preview-img" alt="" style="display:none" />
+          </div>
+          <div class="form-row">
+            <label>메인 카페 제목</label>
+            <input type="text" id="cafe_title" />
+          </div>
+          <div class="form-row">
+            <label>메인 카페 설명</label>
+            <input type="text" id="cafe_desc" />
+          </div>
+          <hr class="divider" />
+          <h2>메인 히어로 배경</h2>
+          <p class="form-hint" style="margin-bottom:12px">이미지나 영상(mp4 등) URL을 넣으세요. 영상이 있으면 영상이 우선 재생됩니다.</p>
+          <div class="form-row">
+            <label>배경 이미지</label>
+            <div class="upload-row">
+              <input type="text" id="hero_image" placeholder="비우면 기본 이미지 사용" style="flex:1" />
+              <input type="file" id="heroImageFile" accept="image/*" />
+              <button type="button" class="btn btn-ghost btn-sm" id="btnUploadHeroImage">업로드</button>
+            </div>
+            <img id="heroImagePreview" class="preview-img hero-preview" alt="" style="display:none" />
+          </div>
+          <div class="form-row">
+            <label>배경 영상 (선택)</label>
+            <div class="upload-row">
+              <input type="text" id="hero_video" placeholder="영상 URL (mp4 등)" style="flex:1" />
+              <input type="file" id="heroVideoFile" accept="video/*" />
+              <button type="button" class="btn btn-ghost btn-sm" id="btnUploadHeroVideo">업로드</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="btnSaveSettings">설정 저장</button>
+        </section>
+
+        <section class="panel" id="panel-password">
+          <h2>관리자 비밀번호 변경</h2>
+          <p class="form-hint" style="margin-bottom:16px">
+            현재 비밀번호를 확인한 뒤 새 비밀번호로 변경합니다. 변경 즉시 새 비밀번호로 로그인 상태가 유지됩니다.
+          </p>
+          <div class="form-row">
+            <label for="currentPassword">현재 비밀번호</label>
+            <input type="password" id="currentPassword" autocomplete="current-password" />
+          </div>
+          <div class="form-row">
+            <label for="newPassword">새 비밀번호</label>
+            <input type="password" id="newPassword" autocomplete="new-password" placeholder="4자 이상" />
+          </div>
+          <div class="form-row">
+            <label for="newPasswordConfirm">새 비밀번호 확인</label>
+            <input type="password" id="newPasswordConfirm" autocomplete="new-password" />
+          </div>
+          <button type="button" class="btn btn-primary" id="btnChangePw">비밀번호 변경</button>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- 게시글 미리보기 모달 -->
+  <div id="previewModal" class="preview-modal" hidden>
+    <div class="preview-modal-backdrop" data-close-preview></div>
+    <div class="preview-modal-panel" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+      <header class="preview-modal-head">
+        <h2 id="previewModalTitle">미리보기</h2>
+        <div class="preview-device-toggle" role="group" aria-label="화면 크기">
+          <button type="button" class="preview-device active" data-device="mobile">모바일</button>
+          <button type="button" class="preview-device" data-device="desktop">PC</button>
+        </div>
+        <button type="button" class="preview-close" data-close-preview aria-label="닫기">×</button>
+      </header>
+      <div class="preview-modal-body">
+        <div class="preview-frame-wrap" data-preview-frame="mobile">
+          <iframe id="previewIframe" title="게시글 미리보기" sandbox=""></iframe>
+        </div>
+      </div>
+      <footer class="preview-modal-foot">
+        <span class="form-hint">저장 전에도 현재 작성 내용으로 미리볼 수 있습니다</span>
+        <button type="button" class="btn btn-ghost" data-close-preview>닫기</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- 공통 알림/확인/로딩 모달 -->
+  <div id="uiModal" class="ui-modal" hidden>
+    <div class="ui-modal-backdrop" data-ui-dismiss></div>
+    <div class="ui-modal-panel" role="dialog" aria-modal="true" aria-labelledby="uiModalTitle">
+      <div class="ui-modal-icon" id="uiModalIcon" aria-hidden="true"></div>
+      <h2 id="uiModalTitle" class="ui-modal-title"></h2>
+      <p id="uiModalMessage" class="ui-modal-message"></p>
+      <pre id="uiModalDetail" class="ui-modal-detail" hidden></pre>
+      <div class="ui-modal-progress" id="uiModalProgress" hidden>
+        <div class="ui-modal-progress-bar"></div>
+      </div>
+      <div class="ui-modal-actions" id="uiModalActions"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/suneditor@2.47.0/dist/suneditor.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/suneditor@2.47.0/src/lang/ko.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/admin.js?v=20260913-imgfix2"></script>
+</body>
+</html>

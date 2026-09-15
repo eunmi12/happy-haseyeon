@@ -1,0 +1,9 @@
+-- 005: 인기글 더미는 코드(ensureSchema)에서 자동 삽입됩니다.
+-- 배포 후 사이트(/) 또는 /admin 을 한 번 열면
+-- slug = mounjaro-diary 인기글이 생성됩니다.
+--
+-- 대표 이미지: /images/popular/mounjaro-01.jpg ~ 10.jpg
+-- 본문에도 동일 이미지 10장이 포함됩니다.
+--
+-- 수동 확인용:
+-- SELECT slug, title, category FROM posts WHERE category = '인기글';

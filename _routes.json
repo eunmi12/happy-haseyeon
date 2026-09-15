@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": [
+    "/css/*",
+    "/js/*",
+    "/index.html",
+    "/post.html",
+    "/admin.html",
+    "/board.html",
+    "/join.html",
+    "/login.html",
+    "/mypage.html",
+    "/images/*",
+    "/favicon.ico"
+  ]
+}

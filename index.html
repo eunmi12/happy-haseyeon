@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <base href="/" />
+  <title>행복하서연</title>
+  <meta name="description" content="다이어트는 정말 쉽다. 솔직한 일상과 후기를 기록합니다 — 행복하서연" />
+  <link rel="canonical" href="https://happy-haseyeon.pages.dev/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:site_name" content="행복하서연" />
+  <meta property="og:title" content="행복하서연" />
+  <meta property="og:description" content="다이어트는 정말 쉽다. 솔직한 일상과 후기를 기록합니다" />
+  <meta property="og:url" content="https://happy-haseyeon.pages.dev/" />
+  <meta property="og:image" content="https://happy-haseyeon.pages.dev/images/hero-diet.jpg" />
+  <link rel="stylesheet" href="/css/common.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2303c75a'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='sans-serif' font-size='18' font-weight='700' fill='%23fff'%3E행%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <!-- 모바일 상단 헤더 -->
+  <header class="mc-mobile-header" id="mobileHeader">
+    <a href="/" class="mc-mobile-brand" id="mobileBrand">행복하서연</a>
+    <div class="mc-mobile-actions">
+      <a href="/" class="mc-icon-btn" aria-label="홈">⌂</a>
+      <button type="button" class="mc-menu-btn" id="menuOpenBtn" data-open-drawer aria-label="메뉴 열기" aria-expanded="false">
+        <span class="mc-menu-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 모바일 우측 드로어 -->
+  <div class="mc-drawer-root" id="navDrawer" hidden>
+    <div class="mc-drawer-backdrop" data-close-drawer></div>
+    <aside class="mc-drawer" role="dialog" aria-modal="true" aria-label="카페 메뉴">
+      <div class="mc-drawer-head">
+        <span class="mc-drawer-title">메뉴</span>
+        <button type="button" class="mc-drawer-close" data-close-drawer aria-label="닫기">×</button>
+      </div>
+      <nav class="mc-drawer-nav" id="drawerNav"></nav>
+      <div class="mc-drawer-tags">
+        <div class="mc-drawer-tags-title">인기 태그</div>
+        <div class="mc-tag-cloud" id="drawerTagCloud"></div>
+      </div>
+      <div class="mc-drawer-foot">
+        <button type="button" class="mc-join-btn" id="drawerJoinBtn">카페 가입하기</button>
+        <a href="/login" class="mc-login-link" id="drawerLoginLink">로그인</a>
+      </div>
+    </aside>
+  </div>
+
+  <div class="mc-banner" id="cafeBanner">
+    <div class="mc-banner-media" id="bannerMedia">
+      <img src="/images/hero-diet.jpg" alt="" />
+    </div>
+    <div class="mc-banner-overlay">
+      <h1 id="cafeTitle">행복하서연</h1>
+      <p id="cafeDesc">다이어트는 정말 쉽다. 솔직한 일상과 후기를 기록합니다</p>
+    </div>
+  </div>
+
+  <div class="mc-tabbar mc-tabbar-desktop">
+    <div class="mc-tabbar-inner" id="tabBarInner"></div>
+    <div class="mc-tabbar-actions">
+      <a href="/" class="mc-icon-btn" aria-label="홈" title="홈">⌂</a>
+      <button type="button" class="mc-icon-btn" data-open-drawer aria-label="메뉴 열기" title="메뉴">≡</button>
+    </div>
+  </div>
+
+  <div class="mc-main">
+    <div class="mc-content">
+      <!-- 홈 대시보드 -->
+      <div id="homeView">
+        <div class="mc-section">
+          <div class="mc-section-header">
+            <span class="mc-section-title">공지사항</span>
+            <a class="mc-section-more" href="/?c=%EA%B3%B5%EC%A7%80">더보기 ›</a>
+          </div>
+          <ul class="mc-notice-list" id="noticeList"></ul>
+        </div>
+
+        <div class="mc-section">
+          <div class="mc-section-header">
+            <span class="mc-section-title">인기글</span>
+            <a class="mc-section-more" href="/?c=%EC%9D%B8%EA%B8%B0%EA%B8%80">더보기 ›</a>
+          </div>
+          <div class="mc-popular-grid" id="popularList"></div>
+        </div>
+
+        <div class="mc-section">
+          <div class="mc-section-header">
+            <span class="mc-section-title">최신글</span>
+            <a class="mc-section-more" href="/?c=all">더보기 ›</a>
+          </div>
+          <ul class="mc-recent-list" id="latestList"></ul>
+        </div>
+      </div>
+
+      <!-- 탭별 게시판 목록 -->
+      <div id="boardView" class="mc-section" hidden>
+        <div class="mc-section-header">
+          <span class="mc-section-title" id="boardTitle">게시판</span>
+        </div>
+        <ul class="mc-board-list" id="boardList"></ul>
+      </div>
+    </div>
+
+    <aside class="mc-sidebar">
+      <div class="mc-sidebar-card">
+        <div id="sideAvatar" class="mc-cafe-logo">유</div>
+        <div class="mc-cafe-name" id="sideName">행복하서연</div>
+        <div class="mc-cafe-desc" id="sideDesc">다이어트는 정말 쉽다. 솔직한 일상과 후기를 기록합니다</div>
+        <button type="button" class="mc-join-btn" id="joinBtn">카페 가입하기</button>
+        <a href="/login" class="mc-login-link" id="loginLink">로그인</a>
+      </div>
+
+      <div class="mc-side-content">
+        <div class="mc-tag-title">인기 태그</div>
+        <div class="mc-tag-cloud" id="tagCloud"></div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/cafe-common.js"></script>
+  <script src="/js/track-view.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

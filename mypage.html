@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <base href="/" />
+  <title>마이페이지 — 행복하서연</title>
+  <link rel="stylesheet" href="/css/common.css" />
+  <link rel="stylesheet" href="/css/member.css" />
+</head>
+<body class="member-body">
+  <header class="member-top">
+    <a href="/" class="member-top-brand">행복하서연</a>
+    <a href="/" class="member-top-link">홈</a>
+  </header>
+
+  <div class="member-wrap">
+    <div class="member-box member-box-wide">
+      <div class="member-hero">
+        <div class="member-hero-mark">MY</div>
+        <p class="member-hero-label">마이페이지</p>
+      </div>
+      <h1>내 프로필</h1>
+      <p class="sub" id="usernameLabel">프로필을 수정할 수 있습니다</p>
+      <div class="msg" id="msg"></div>
+
+      <div class="mypage-avatar-wrap">
+        <div class="mypage-avatar" id="avatarPreview">?</div>
+      </div>
+
+      <form id="profileForm">
+        <div class="form-row">
+          <label for="nickname">닉네임</label>
+          <input type="text" id="nickname" required maxlength="40" />
+        </div>
+        <div class="form-row">
+          <label>프로필 이미지</label>
+          <div class="upload-row">
+            <input type="text" id="profile_image" placeholder="URL 또는 업로드" />
+            <input type="file" id="profileFile" accept="image/*" />
+            <button type="button" class="btn btn-ghost btn-sm" id="btnUpload">업로드</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="password">새 비밀번호 (선택)</label>
+          <input type="password" id="password" autocomplete="new-password" placeholder="변경할 때만 입력" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">저장</button>
+      </form>
+      <div class="mypage-actions">
+        <a href="/">홈으로</a>
+        <button type="button" class="link-btn" id="btnLogout">로그아웃</button>
+      </div>
+    </div>
+  </div>
+  <script src="/js/config.js"></script>
+  <script src="/js/cafe-common.js"></script>
+  <script src="/js/mypage.js"></script>
+</body>
+</html>

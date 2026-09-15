@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <base href="/" />
+  <title>카페 가입 — 행복하서연</title>
+  <link rel="stylesheet" href="/css/common.css" />
+  <link rel="stylesheet" href="/css/member.css" />
+</head>
+<body class="member-body">
+  <header class="member-top">
+    <a href="/" class="member-top-brand">행복하서연</a>
+    <a href="/login" class="member-top-link">로그인</a>
+  </header>
+
+  <div class="member-wrap">
+    <div class="member-box">
+      <div class="member-hero">
+        <div class="member-hero-mark">유</div>
+        <p class="member-hero-label">카페 멤버십</p>
+      </div>
+      <h1>카페 가입하기</h1>
+      <p class="sub">아이디 · 비밀번호 · 닉네임만 입력하면 바로 가입됩니다</p>
+      <div class="msg err" id="msg"></div>
+      <form id="joinForm">
+        <div class="form-row">
+          <label for="username">아이디</label>
+          <input type="text" id="username" autocomplete="username" required minlength="3" maxlength="32" placeholder="영문·숫자·밑줄 (3자 이상)" />
+        </div>
+        <div class="form-row">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" autocomplete="new-password" required minlength="4" placeholder="4자 이상" />
+        </div>
+        <div class="form-row">
+          <label for="nickname">닉네임</label>
+          <input type="text" id="nickname" required maxlength="40" placeholder="카페에서 보일 이름" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">가입하기</button>
+      </form>
+      <p class="member-foot">이미 회원이신가요? <a href="/login">로그인</a></p>
+      <p class="member-foot"><a href="/">← 카페 홈으로</a></p>
+    </div>
+  </div>
+  <script src="/js/config.js"></script>
+  <script src="/js/cafe-common.js"></script>
+  <script src="/js/join.js"></script>
+</body>
+</html>

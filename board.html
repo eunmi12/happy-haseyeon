@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>게시판 이동 중…</title>
+  <script>
+    (function () {
+      var c = new URLSearchParams(location.search).get('c') || 'all';
+      location.replace('/?c=' + encodeURIComponent(c));
+    })();
+  </script>
+</head>
+<body>
+  <p style="font-family:sans-serif;padding:24px;color:#666">게시판으로 이동 중…</p>
+</body>
+</html>

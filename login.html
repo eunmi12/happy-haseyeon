@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <base href="/" />
+  <title>로그인 — 행복하서연</title>
+  <link rel="stylesheet" href="/css/common.css" />
+  <link rel="stylesheet" href="/css/member.css" />
+</head>
+<body class="member-body">
+  <header class="member-top">
+    <a href="/" class="member-top-brand">행복하서연</a>
+    <a href="/join" class="member-top-link">카페 가입</a>
+  </header>
+
+  <div class="member-wrap">
+    <div class="member-box">
+      <div class="member-hero">
+        <div class="member-hero-mark">유</div>
+        <p class="member-hero-label">카페 로그인</p>
+      </div>
+      <h1>로그인</h1>
+      <p class="sub">가입한 아이디와 비밀번호로 로그인하세요</p>
+      <div class="msg err" id="msg"></div>
+      <form id="loginForm">
+        <div class="form-row">
+          <label for="username">아이디</label>
+          <input type="text" id="username" autocomplete="username" required placeholder="아이디" />
+        </div>
+        <div class="form-row">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" autocomplete="current-password" required placeholder="비밀번호" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">로그인</button>
+      </form>
+
+      <div class="member-help-links">
+        <button type="button" class="link-btn" id="btnOpenFindId">아이디 찾기</button>
+        <span class="dot">·</span>
+        <button type="button" class="link-btn" id="btnOpenResetPw">비밀번호 찾기</button>
+      </div>
+
+      <p class="member-foot">계정이 없으신가요? <a href="/join">카페 가입하기</a></p>
+      <p class="member-foot"><a href="/">← 카페 홈으로</a></p>
+    </div>
+  </div>
+
+  <!-- 아이디 찾기 -->
+  <div class="member-modal" id="findIdModal" hidden>
+    <div class="member-modal-backdrop" data-close-modal></div>
+    <div class="member-modal-panel" role="dialog" aria-modal="true" aria-labelledby="findIdTitle">
+      <h2 id="findIdTitle">아이디 찾기</h2>
+      <p class="sub">가입 시 사용한 닉네임을 입력하세요</p>
+      <div class="msg err" id="findIdMsg"></div>
+      <form id="findIdForm">
+        <div class="form-row">
+          <label for="findNickname">닉네임</label>
+          <input type="text" id="findNickname" required placeholder="닉네임" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">아이디 찾기</button>
+      </form>
+      <p class="member-result" id="findIdResult" hidden></p>
+      <button type="button" class="btn btn-ghost btn-block" data-close-modal>닫기</button>
+    </div>
+  </div>
+
+  <!-- 비밀번호 재설정 -->
+  <div class="member-modal" id="resetPwModal" hidden>
+    <div class="member-modal-backdrop" data-close-modal></div>
+    <div class="member-modal-panel" role="dialog" aria-modal="true" aria-labelledby="resetPwTitle">
+      <h2 id="resetPwTitle">비밀번호 찾기</h2>
+      <p class="sub">아이디와 닉네임이 일치하면 새 비밀번호로 변경할 수 있습니다</p>
+      <div class="msg err" id="resetPwMsg"></div>
+      <form id="resetPwForm">
+        <div class="form-row">
+          <label for="resetUsername">아이디</label>
+          <input type="text" id="resetUsername" required placeholder="아이디" />
+        </div>
+        <div class="form-row">
+          <label for="resetNickname">닉네임</label>
+          <input type="text" id="resetNickname" required placeholder="닉네임" />
+        </div>
+        <div class="form-row">
+          <label for="resetNewPassword">새 비밀번호</label>
+          <input type="password" id="resetNewPassword" required minlength="4" placeholder="4자 이상" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">비밀번호 변경</button>
+      </form>
+      <button type="button" class="btn btn-ghost btn-block" data-close-modal>닫기</button>
+    </div>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/cafe-common.js"></script>
+  <script src="/js/member-login.js"></script>
+</body>
+</html>

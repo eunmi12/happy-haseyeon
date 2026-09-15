@@ -1,0 +1,14 @@
+node_modules
+.wrangler
+.vscode
+.git
+functions
+*.sql
+*.toml
+*.md
+.gitignore
+.assetsignore
+package.json
+package-lock.json
+.dev.vars
+*.log

@@ -1,0 +1,82 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css");
+@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css");
+
+/* 공통 — 네이버 블로그 톤 타이포 */
+:root {
+  --naver: #03c75a;
+  --naver-dark: #02b350;
+  --text: #222;
+  --text-sub: #666;
+  --text-muted: #999;
+  --line: #e5e5e5;
+  --bg: #fff;
+  --white: #fff;
+  --heart: #ff5a5a;
+  --font: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  /* 네이버 NanumSquareNeo는 weight별 family명이 다름 → ExtraBold 전용 이름 사용 */
+  --font-title: "NanumSquareNeoExtraBold", "NanumSquareNeoBold", "Pretendard", sans-serif;
+  --font-body: "NanumGothic", "Nanum Gothic", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.post-title,
+.mc-banner-fallback h1,
+.mc-banner-overlay h1,
+.mc-section-title,
+.mc-cafe-name,
+.mc-popular-title {
+  font-family: var(--font-title);
+  font-weight: normal; /* ExtraBold는 family에 포함 */
+  letter-spacing: -0.03em;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: top;
+}
+
+button {
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--white);
+  min-height: 100vh;
+}
+
+@media (max-width: 860px) {
+  .wrap {
+    max-width: 100%;
+  }
+}

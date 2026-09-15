@@ -1,0 +1,5 @@
+-- 이 파일은 더 이상 수정하지 않습니다.
+-- 새 SQL은 migrations/ 폴더에 번호 파일로 추가하세요.
+-- 예: migrations/002_something.sql
+--
+-- 현재 적용분: migrations/001_cafe_tabs_notices_tags_members.sql
