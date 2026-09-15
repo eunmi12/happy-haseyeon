@@ -77,7 +77,7 @@ function ensurePostDrawerDom() {
     const { post, comments } = await postRes.json();
 
     const blogName = settings.blog_name || '행복하서연';
-    const profileName = settings.profile_name || '하서연';
+    const profileName = settings.profile_name || '행복하서연';
     document.title = post.title || blogName;
 
     const profileImg = settings.profile_image

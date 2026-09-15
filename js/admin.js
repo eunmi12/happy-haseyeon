@@ -2984,19 +2984,69 @@ async function loadSettings() {
       if (el) el.value = settings[k] || '';
     }
   );
-  const prev = document.getElementById('profilePreview');
-  if (settings.profile_image) {
-    prev.src = settings.profile_image.startsWith('http')
-      ? settings.profile_image
-      : apiUrl(settings.profile_image);
-    prev.style.display = 'block';
-  } else {
-    prev.style.display = 'none';
-  }
+  refreshSettingsAvatarPreview();
   const heroPrev = document.getElementById('heroImagePreview');
   const heroSrc = settings.hero_image || '/images/hero-diet.jpg';
   heroPrev.src = heroSrc.startsWith('http') || heroSrc.startsWith('/') ? heroSrc : apiUrl(heroSrc);
   heroPrev.style.display = 'block';
+}
+
+function resolveSettingsMediaUrl(src) {
+  const s = String(src || '').trim();
+  if (!s) return '';
+  if (s.startsWith('http') || s.startsWith('data:') || s.startsWith('blob:') || s.startsWith('/')) {
+    return s;
+  }
+  return apiUrl(s);
+}
+
+function refreshSettingsAvatarPreview() {
+  const img = document.getElementById('profilePreview');
+  const initial = document.getElementById('settingsAvatarInitial');
+  const name = document.getElementById('profile_name')?.value.trim() || '행복하서연';
+  const src = resolveSettingsMediaUrl(document.getElementById('profile_image')?.value || '');
+  if (initial) initial.textContent = name.charAt(0) || '행';
+  if (!img) return;
+  if (src) {
+    img.src = src;
+    img.hidden = false;
+    if (initial) initial.hidden = true;
+  } else {
+    img.removeAttribute('src');
+    img.hidden = true;
+    if (initial) initial.hidden = false;
+  }
+}
+
+/** R2 없을 때 프로필용 작은 data URL 생성 */
+function fileToAvatarDataUrl(file, maxSize = 320, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      try {
+        const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+        const w = Math.max(1, Math.round(image.width * scale));
+        const h = Math.max(1, Math.round(image.height * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        URL.revokeObjectURL(url);
+        resolve(dataUrl);
+      } catch (e) {
+        URL.revokeObjectURL(url);
+        reject(e);
+      }
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('이미지를 읽을 수 없습니다.'));
+    };
+    image.src = url;
+  });
 }
 
 const MAX_UPLOAD_IMAGE = 10 * 1024 * 1024;
@@ -3294,7 +3344,7 @@ function resolvePreviewUrl(url) {
 
 function buildPreviewHtml(settings) {
   const blogName = settings.blog_name || '행복하서연';
-  const profileName = settings.profile_name || '하서연';
+  const profileName = settings.profile_name || '행복하서연';
   const title = document.getElementById('title').value || '(제목 없음)';
   const published = document.getElementById('published_at').value || '미리보기';
   const likes = Number(document.getElementById('likes').value) || 0;
@@ -3965,15 +4015,40 @@ function bindAdminUI() {
     }
   };
 
+  document.getElementById('profile_name')?.addEventListener('input', refreshSettingsAvatarPreview);
+  document.getElementById('profile_image')?.addEventListener('input', refreshSettingsAvatarPreview);
+
+  document.getElementById('btnPickProfile')?.addEventListener('click', () => {
+    document.getElementById('profileFile')?.click();
+  });
+
+  document.getElementById('profileFile')?.addEventListener('change', () => {
+    // 파일 선택 직후 바로 업로드 시도
+    document.getElementById('btnUploadProfile')?.click();
+  });
+
+  document.getElementById('btnClearProfile')?.addEventListener('click', () => {
+    const input = document.getElementById('profile_image');
+    if (input) input.value = '';
+    const file = document.getElementById('profileFile');
+    if (file) file.value = '';
+    refreshSettingsAvatarPreview();
+    toast('이미지를 지웠습니다. 설정 저장을 눌러주세요.');
+  });
+
   document.getElementById('btnUploadProfile').onclick = async () => {
     const file = document.getElementById('profileFile').files[0];
     if (!file) return toast('파일을 선택하세요.', false);
     try {
-      const url = await uploadFile(file);
+      let url = '';
+      try {
+        url = await uploadFile(file);
+      } catch (_) {
+        // R2 미연결 시 작은 data URL로 저장
+        url = await fileToAvatarDataUrl(file);
+      }
       document.getElementById('profile_image').value = url;
-      const prev = document.getElementById('profilePreview');
-      prev.src = url.startsWith('http') || url.startsWith('data:') ? url : apiUrl(url);
-      prev.style.display = 'block';
+      refreshSettingsAvatarPreview();
       toast('업로드 완료. 설정 저장을 눌러주세요.');
     } catch (e) {
       toast(e.message, false);

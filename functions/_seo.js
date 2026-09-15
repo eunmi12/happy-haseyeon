@@ -71,7 +71,7 @@ export function blogPostingJsonLd(post, seo, settings = {}) {
     dateModified: post.updated_at || post.created_at || undefined,
     author: {
       '@type': 'Person',
-      name: settings.profile_name || settings.blog_name || '하서연',
+      name: settings.profile_name || settings.blog_name || '행복하서연',
     },
     publisher: {
       '@type': 'Organization',

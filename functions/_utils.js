@@ -398,7 +398,7 @@ export async function ensureSchema(env) {
         "INSERT INTO settings (key, value) VALUES ('blog_subtitle', '다이어트는 정말 쉽다. 솔직한 일상과 후기를 기록합니다')"
       ),
       env.DB.prepare(
-        "INSERT INTO settings (key, value) VALUES ('profile_name', '하서연')"
+        "INSERT INTO settings (key, value) VALUES ('profile_name', '행복하서연')"
       ),
       env.DB.prepare(
         "INSERT INTO settings (key, value) VALUES ('profile_image', '')"

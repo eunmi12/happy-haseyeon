@@ -808,21 +808,39 @@
         <section class="panel" id="panel-settings">
           <h2>블로그 / 프로필 설정</h2>
           <div class="form-row">
-            <label>블로그명 (상세 상단)</label>
+            <label>블로그명 (상세 상단 브랜드)</label>
             <input type="text" id="blog_name" />
           </div>
-          <div class="form-row">
-            <label>프로필 이름</label>
-            <input type="text" id="profile_name" />
-          </div>
-          <div class="form-row">
-            <label>프로필 사진</label>
-            <div class="upload-row">
-              <input type="text" id="profile_image" placeholder="이미지 URL 또는 업로드" style="flex:1" />
-              <input type="file" id="profileFile" accept="image/*" />
-              <button type="button" class="btn btn-ghost btn-sm" id="btnUploadProfile">업로드</button>
+
+          <div class="settings-profile-card">
+            <p class="form-hint settings-profile-hint">
+              글 상세 상단의 <strong>원형 프로필 · 이름</strong>에 그대로 반영됩니다.
+            </p>
+            <div class="settings-profile-preview-row">
+              <div class="settings-avatar-preview" id="settingsAvatarPreview" aria-hidden="true">
+                <img id="profilePreview" alt="" hidden />
+                <span id="settingsAvatarInitial">행</span>
+              </div>
+              <div class="settings-profile-fields">
+                <div class="form-row" style="margin-bottom:10px">
+                  <label for="profile_name">프로필 이름 (원형 오른쪽 텍스트)</label>
+                  <input type="text" id="profile_name" placeholder="예: 행복하서연" />
+                </div>
+                <div class="form-row" style="margin-bottom:0">
+                  <label>프로필 사진 (원형 이미지)</label>
+                  <div class="upload-row">
+                    <input type="text" id="profile_image" placeholder="이미지 URL 또는 업로드" style="flex:1" />
+                    <input type="file" id="profileFile" accept="image/*" hidden />
+                    <button type="button" class="btn btn-ghost btn-sm" id="btnPickProfile">이미지 선택</button>
+                    <button type="button" class="btn btn-ghost btn-sm" id="btnUploadProfile">업로드</button>
+                    <button type="button" class="btn btn-ghost btn-sm" id="btnClearProfile" title="이미지 제거">제거</button>
+                  </div>
+                  <p class="form-hint" style="margin-top:6px">
+                    JPG/PNG · 권장 정사각. R2가 없어도 작은 이미지는 자동 저장됩니다. 저장 버튼을 눌러야 반영됩니다.
+                  </p>
+                </div>
+              </div>
             </div>
-            <img id="profilePreview" class="preview-img" alt="" style="display:none" />
           </div>
           <div class="form-row">
             <label>메인 카페 제목</label>

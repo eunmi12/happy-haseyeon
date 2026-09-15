@@ -3,7 +3,7 @@ INSERT OR IGNORE INTO admins (id, password) VALUES (1, 'admin1234');
 INSERT OR REPLACE INTO settings (key, value) VALUES
   ('blog_name', '행복하서연'),
   ('blog_subtitle', '다이어트는 정말 쉽다. 솔직한 일상과 후기를 기록합니다'),
-  ('profile_name', '하서연'),
+  ('profile_name', '행복하서연'),
   ('profile_image', ''),
   ('profile_desc', '행복하서연의 다이어트 · 일상 기록'),
   ('cafe_title', '행복하서연'),

@@ -127,7 +127,7 @@ function notFoundHtml() {
 
 function renderPost(post, comments, settings, origin = 'https://happy-haseyeon.pages.dev') {
   const blogName = settings.blog_name || '행복하서연';
-  const profileName = settings.profile_name || '하서연';
+  const profileName = settings.profile_name || '행복하서연';
   const { headHtml } = postHeadTags(post, settings, origin);
   const pixelHead = buildPixelHeadHtml(post.ad_pixels);
   const pixelBody = buildPixelBodyStartHtml(post.ad_pixels);
