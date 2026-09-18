@@ -654,8 +654,15 @@ function ensureEditor() {
       }
     },
     onPaste: function (e, cleanData, _maxCharCount, core) {
+      const htmlRaw = e?.clipboardData?.getData('text/html') || '';
+      const hasRichHtml = !!htmlRaw.trim();
+
+      // 네이버 블로그처럼 HTML + 이미지 파일을 동시에 넣는 클립보드는
+      // 이미지 파일 경로와 HTML 경로를 둘 다 처리하면 중복 삽입될 수 있다.
+      // HTML이 있으면 SunEditor의 HTML 붙여넣기 경로만 사용하고,
+      // "이미지 파일만" 붙여넣은 경우에만 직접 업로드한다.
       const items = e?.clipboardData?.items;
-      if (items) {
+      if (items && !hasRichHtml) {
         const files = [];
         for (let i = 0; i < items.length; i++) {
           if (items[i].kind === 'file' && items[i].type.startsWith('image/')) {
@@ -665,6 +672,7 @@ function ensureEditor() {
         }
         if (files.length) {
           e.preventDefault();
+          e.stopPropagation?.();
           insertUploadedImages(files, core);
           return false;
         }
@@ -675,7 +683,6 @@ function ensureEditor() {
         e?.clipboardData?.getData('text/plain') ||
         e?.clipboardData?.getData('text') ||
         '';
-      const htmlRaw = e?.clipboardData?.getData('text/html') || '';
       const fromClean =
         typeof cleanData === 'string'
           ? cleanData.replace(/<[^>]+>/g, ' ').trim()
@@ -700,6 +707,7 @@ function ensureEditor() {
 
       if (typeof cleanData === 'string' && /data:image\//i.test(cleanData)) {
         e.preventDefault();
+        e.stopPropagation?.();
         showLoading('붙여넣은 이미지를 R2에 올리는 중…', '이미지 처리');
         replaceBase64ImagesInHtml(cleanData)
           .then((html) => {
